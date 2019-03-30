@@ -1,0 +1,21 @@
+<mat-card>
+  <mat-card-header><h1 class="mat-h1">Sign in/up</h1></mat-card-header>
+  <mat-card-content>
+    <form (ngSubmit)="signInUp()" *ngIf="!authService.loggedIn()" [formGroup]="form" novalidate>
+      <mat-form-field class="example-full-width form-group">
+        <input formControlName="email" id="email" matInput name="email" placeholder="Email" type="email">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width form-group">
+        <input formControlName="password" id="password" matInput name="password" placeholder="Password"
+               type="password">
+      </mat-form-field>
+
+      <button color="accent" mat-raised-button
+              type="submit">Auth
+      </button>
+    </form>
+
+    <p *ngIf="authService.loggedIn()">You are logged in.</p>
+  </mat-card-content>
+</mat-card>

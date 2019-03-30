@@ -1,0 +1,33 @@
+<form (ngSubmit)="closeDialog()" [formGroup]="form">
+  <mat-form-field *ngIf="!data || !data.email">
+    <input formControlName="email" matInput placeholder="Email" required type="email">
+  </mat-form-field>
+  <h3 *ngIf="data && data.email" class="mat-h3">{{data.email}}</h3>
+
+  <mat-form-field *ngIf="form.controls['password'].enabled">
+    <input formControlName="password" matInput placeholder="Password" required type="password">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select formControlName="roles" matInput multiple placeholder="Role">
+      <mat-option *ngFor="let role of roles" [value]="role">
+        {{ role }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button *ngIf="!data" [disabled]="form.invalid" class="btn" mat-raised-button type="submit">
+    <mat-icon>add_to_queue</mat-icon>
+    Create
+  </button>
+  <ng-container *ngIf="data">
+    <button [disabled]="form.invalid" class="btn" mat-raised-button type="submit">
+      <mat-icon>update</mat-icon>
+      Update
+    </button>
+    <button (click)="destroy = true" class="btn" mat-raised-button type="submit">
+      <mat-icon>delete</mat-icon>
+      Delete
+    </button>
+  </ng-container>
+</form>
