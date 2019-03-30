@@ -1,0 +1,18 @@
+import { Component, Input } from '@angular/core';
+import { MatTableDataSource } from '@angular/material';
+
+import { TRiskResOut } from '../../api/risk_res/risk_res.services';
+
+@Component({
+  selector: 'app-risk-res-data',
+  templateUrl: './risk-res-data.component.html',
+  styleUrls: ['./risk-res-data.component.css']
+})
+export class RiskResDataComponent {
+  @Input('dataSource') dataSource: MatTableDataSource<TRiskResOut>;
+
+  displayedColumns: string[] = [
+    'client_risk', 'age', 'gender', 'ethnicity', 'sibling', 'parent',
+    'study', 'myopia', 'diabetes', 'createdAt', 'updatedAt'
+  ];
+}

@@ -10,7 +10,7 @@ Analytics and administrator interface for the glaucoma-risk-calculator.
 ## Deploy distribution
 Clone [glaucoma-risk-calculator-analytics-dist](https://github.com/SamuelMarks/glaucoma-risk-calculator-analytics-dist) one directory above, then:
 
-    rm -rf dist; ng build --prod && d=../glaucoma-risk-calculator-web-frontend-dist && rm -rf "$d/dist" && mv "$PWD/dist/${PWD##*/}/" "$d/dist" && cd "$d" && (git add .; git status) || ( >&2 echo BUILD FAILED )
+    rm -rf dist; ng build --prod --base-href /admin/ && d=../glaucoma-risk-calculator-analytics-dist && rm -rf "$d/dist" && mv "$PWD/dist/${PWD##*/}/" "$d/dist" && cd "$d" && (git add .; git status) || ( >&2 echo BUILD FAILED )
 
 ---
 
