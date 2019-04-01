@@ -6,20 +6,22 @@ import { MatPaginator, MatTableDataSource } from '@angular/material';
 
 import { Subscription } from 'rxjs';
 
-import { IEthnicityAgg, ISingleSeries, TRiskResOut } from '../../api/risk_res/risk_res.services';
-import { RiskResService } from '../../api/risk_res/risk_res.service';
+import { ISingleSeries, TRiskResRow } from '../../api/risk_res/risk_res.services.d';
+import { IAnalyticsResponse } from '../../api/analytics/analytics.services.d';
+import { AnalyticsService } from '../../api/analytics/analytics.service';
 
 
 @Component({
-  selector: 'app-risk-res-values',
-  templateUrl: './risk-res-values.component.html',
-  styleUrls: ['./risk-res-values.component.css']
+  selector: 'app-analytics',
+  templateUrl: './analytics.component.html',
+  styleUrls: ['./analytics.component.css']
 })
-export class RiskResValuesComponent implements OnInit, OnDestroy {
-  dataSource: MatTableDataSource<TRiskResOut> = null;
+export class AnalyticsComponent implements OnInit, OnDestroy {
+  dataSource: MatTableDataSource<TRiskResRow> = null;
   age_distr: Array<{name: string, series: Array<{name: string, value: number}>}>;
   ethnicity_agg: ISingleSeries[];
   view: [number, number] = [250, 250];
+  step_2: IAnalyticsResponse['step_2'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -27,7 +29,7 @@ export class RiskResValuesComponent implements OnInit, OnDestroy {
   activeMediaQuery = '';
 
   constructor(mediaObserver: MediaObserver,
-              private riskResService: RiskResService) {
+              private analyticsService: AnalyticsService) {
     this.watcher = mediaObserver
       .asObservable()
       .subscribe((changes: MediaChange[]) => {
@@ -51,12 +53,15 @@ export class RiskResValuesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.riskResService.readAll().subscribe(risk_res_out => {
-      this.dataSource = new MatTableDataSource<TRiskResOut>(risk_res_out.risk_res);
-      this.dataSource.paginator = this.paginator;
-      this.ethnicity_agg = risk_res_out.ethnicity_agg;
-      this.graphInit();
-    });
+    this.analyticsService
+      .readAll()
+      .subscribe(analytics => {
+        this.dataSource = new MatTableDataSource<TRiskResRow>(analytics.risk_res);
+        this.dataSource.paginator = this.paginator;
+        this.ethnicity_agg = analytics.ethnicity_agg;
+        this.step_2 = analytics.step_2;
+        this.graphInit();
+      });
   }
 
   private graphInit() {
@@ -64,7 +69,7 @@ export class RiskResValuesComponent implements OnInit, OnDestroy {
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].forEach(
       k => age_to_riskids.set(k, [])
     );
-    const riskid_to_risk = new Map<number, TRiskResOut>();
+    const riskid_to_risk = new Map<number, TRiskResRow>();
     this.dataSource.data.forEach(risk_res => {
       riskid_to_risk.set(risk_res.id, risk_res);
       const k = Math.floor(risk_res.age / 10);

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 
-import { TRiskResOut } from '../../api/risk_res/risk_res.services';
+import { TRiskResRow } from '../../api/risk_res/risk_res.services';
 
 @Component({
   selector: 'app-risk-res-data',
@@ -9,7 +9,7 @@ import { TRiskResOut } from '../../api/risk_res/risk_res.services';
   styleUrls: ['./risk-res-data.component.css']
 })
 export class RiskResDataComponent {
-  @Input('dataSource') dataSource: MatTableDataSource<TRiskResOut>;
+  @Input('dataSource') dataSource: MatTableDataSource<TRiskResRow>;
 
   displayedColumns: string[] = [
     'client_risk', 'age', 'gender', 'ethnicity', 'sibling', 'parent',

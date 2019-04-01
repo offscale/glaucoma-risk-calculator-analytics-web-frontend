@@ -2,7 +2,7 @@
 
 import { IInput, IMultiplicativeRisks } from 'glaucoma-risk-quiz-engine';
 
-export type TRiskResOut = Partial<IMultiplicativeRisks & IInput> & {client_risk: number, ethnicity: string}
+export type TRiskResRow = Partial<IMultiplicativeRisks & IInput> & {client_risk: number, ethnicity: string}
   & {id: number, createdAt: string, updatedAt: string};
 
 export interface IEthnicityAgg {
@@ -14,3 +14,5 @@ export interface ISingleSeries {
   name: string;
   value: number;
 }
+
+export type TSingleSeries = Array<{name: string, value: number}>;

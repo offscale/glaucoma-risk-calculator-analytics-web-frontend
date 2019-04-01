@@ -16,7 +16,7 @@ export const appRoutes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'secret-dashboard/risk-res-values', loadChildren: './risk-res-values/risk-res-values.module#RiskResValuesModule',
+    path: 'secret-dashboard/analytics', loadChildren: './analytics/analytics.module#AnalyticsModule',
     canActivate: [AuthGuard]
   },
 ];

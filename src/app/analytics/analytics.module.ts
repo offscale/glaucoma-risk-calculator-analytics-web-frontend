@@ -11,21 +11,22 @@ import { MatButtonModule, MatCardModule, MatPaginatorModule, MatTableModule, Mat
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { RiskResService } from '../../api/risk_res/risk_res.service';
-import { RiskResValuesComponent } from './risk-res-values.component';
-import { riskResValuesRoutes } from './risk-res-values.routes';
 import { RiskResDataComponent } from '../risk-res-data/risk-res-data.component';
+import { AnalyticsService } from '../../api/analytics/analytics.service';
+import { AnalyticsComponent } from './analytics.component';
+import { analyticsRoutes } from './analytics.routes';
 
 
 @NgModule({
-  declarations: [RiskResValuesComponent, RiskResDataComponent],
+  declarations: [AnalyticsComponent, RiskResDataComponent],
   imports: [
-    CommonModule, RouterModule, RouterModule.forChild(riskResValuesRoutes),
+    CommonModule, RouterModule, RouterModule.forChild(analyticsRoutes),
     FlexLayoutModule,
     CdkTableModule,
     MatButtonModule, MatCardModule, MatPaginatorModule, MatTableModule, MatTabsModule,
     NgxChartsModule
   ],
-  exports: [RiskResValuesComponent],
-  providers: [RiskResService]
+  exports: [AnalyticsComponent],
+  providers: [RiskResService, AnalyticsService]
 })
-export class RiskResValuesModule {}
+export class AnalyticsModule {}

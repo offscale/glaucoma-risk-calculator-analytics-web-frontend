@@ -1,15 +1,15 @@
 <button routerLink="/secret-dashboard" mat-button>⇦ back</button>
 
 <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px"
-     style="width: 100%; padding: 30px 0;"
      *ngIf="dataSource != null && dataSource.data.length">
-  <mat-card fxFlex="30%">
+  <mat-card fxFlex>
     <mat-card-title>Calculations</mat-card-title>
     <mat-card-content>
-      <h1 style="font-size: 8em">{{dataSource != null && dataSource.data.length}}</h1>
+      <h1>{{step_2.count}}</h1>
     </mat-card-content>
   </mat-card>
-  <mat-card fxFlex="30%">
+
+  <mat-card fxFlex>
     <mat-card-title>Ethnic distribution</mat-card-title>
     <mat-card-content>
       <ngx-charts-pie-chart fxFlex [labels]="true" [results]="ethnicity_agg" [view]="view"
@@ -17,12 +17,27 @@
       </ngx-charts-pie-chart>
     </mat-card-content>
   </mat-card>
-  <mat-card fxFlex="30%">
+
+  <mat-card fxFlex>
     <mat-card-title>Age distribution</mat-card-title>
     <mat-card-content>
       <ngx-charts-line-chart fxFlex [results]="age_distr"
                              [view]="view"
                              [yAxis]="true"></ngx-charts-line-chart>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px"
+     style="padding: 30px 0;"
+     *ngIf="step_2 != null">
+  <mat-card fxFlex>
+    <mat-card-title>Stratified risk</mat-card-title>
+    <mat-card-content>
+      <h2>{{step_2.least}}</h2>
+      <h2 style="color: dodgerblue">{{step_2.average}}</h2>
+      <h2 style="color: orangered">{{step_2.high}}</h2>
+      <h2 style="color: red">{{step_2.greatest}}</h2>
     </mat-card-content>
   </mat-card>
 </div>
