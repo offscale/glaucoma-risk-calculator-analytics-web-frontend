@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
@@ -17,7 +17,7 @@ export class AnalyticsService {
     return this.http.get<IAnalyticsResponse>(`/api/analytics/${id}`);
   }
 
-  readAll(): Observable<IAnalyticsResponse> {
-    return this.http.get<IAnalyticsResponse>('/api/analytics');
+  readAll(params: HttpParams): Observable<IAnalyticsResponse> {
+    return this.http.get<IAnalyticsResponse>('/api/analytics', {params: params});
   }
 }

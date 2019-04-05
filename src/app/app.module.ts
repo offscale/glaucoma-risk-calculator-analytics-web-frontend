@@ -24,6 +24,7 @@ import { SidenavModule } from './sidenav/sidenav.module';
 import { AlertsModule } from './alerts/alerts.module';
 import { appRoutes } from './app.routes';
 
+
 @NgModule({
   declarations: [
     AppComponent
@@ -43,14 +44,18 @@ import { appRoutes } from './app.routes';
     MatGridListModule,
     MatCardModule,
     MatMenuModule,
+    // MatMomentDateModule,
     AlertsModule.forRoot(),
     SidenavModule
   ],
-  providers: [AuthGuard, {
-    provide: HTTP_INTERCEPTORS,
-    useClass: AuthInterceptor,
-    multi: true,
-  }],
+  providers: [
+    AuthGuard, {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+    // MatMomentDateModule
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

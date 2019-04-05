@@ -1,5 +1,22 @@
 <button routerLink="/secret-dashboard" mat-button>⇦ back</button>
 
+<div fxLayout="row" style="padding: 30px 0" fxLayoutGap="20px">
+<div fxFlex="40">
+    <label for="daterange" style="display: none">Datetime range:</label>
+    <input [(ngModel)]="selectedMoments" [selectMode]="'range'"
+           [owlDateTimeTrigger]="dtPicker3" [owlDateTime]="dtPicker3"
+           style="width: 100%; color: cornflowerblue"
+           id="daterange" matInput>
+    <owl-date-time #dtPicker3></owl-date-time>
+</div>
+    <button fxFlex="30" mat-raised-button (click)="toDateRange()">Set datetime range</button>
+
+  <!--
+  <input [matDatepicker]="pickerStart" id="start" fxFlex="30">
+  <mat-datepicker type="datetime" clockStep="5" #pickerStart></mat-datepicker>
+  -->
+</div>
+
 <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px"
      *ngIf="dataSource != null && dataSource.data.length">
   <mat-card fxFlex>

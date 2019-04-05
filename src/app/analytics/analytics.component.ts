@@ -10,18 +10,47 @@ import { ISingleSeries, TRiskResRow } from '../../api/risk_res/risk_res.services
 import { IAnalyticsResponse } from '../../api/analytics/analytics.services.d';
 import { AnalyticsService } from '../../api/analytics/analytics.service';
 
+import * as moment from 'moment-timezone';
+import { DateTimeAdapter, OWL_DATE_TIME_FORMATS, OWL_DATE_TIME_LOCALE } from 'ng-pick-datetime';
+import { MomentDateTimeAdapter } from 'ng-pick-datetime/date-time/adapter/moment-adapter/moment-date-time-adapter.class';
+import { OWL_MOMENT_DATE_TIME_FORMATS } from 'ng-pick-datetime/date-time/adapter/moment-adapter/moment-date-time-format.class';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Moment } from 'moment';
+import { HttpParams } from '@angular/common/http';
+
+moment().tz('Australia/Sydney').format();
 
 @Component({
   selector: 'app-analytics',
   templateUrl: './analytics.component.html',
-  styleUrls: ['./analytics.component.css']
+  styleUrls: ['./analytics.component.css'],
+  /*providers: [
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+  ]*/
+
+  providers: [
+    // `MomentDateTimeAdapter` and `OWL_MOMENT_DATE_TIME_FORMATS` can be automatically provided by importing
+    // `OwlMomentDateTimeModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    { provide: DateTimeAdapter, useClass: MomentDateTimeAdapter, deps: [OWL_DATE_TIME_LOCALE] },
+    { provide: OWL_DATE_TIME_FORMATS, useValue: OWL_MOMENT_DATE_TIME_FORMATS },
+  ]
 })
 export class AnalyticsComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<TRiskResRow> = null;
-  age_distr: Array<{name: string, series: Array<{name: string, value: number}>}>;
+  age_distr: Array<{name: string, series: ISingleSeries[]}>;
   ethnicity_agg: ISingleSeries[];
   view: [number, number] = [250, 250];
   step_2: IAnalyticsResponse['step_2'];
+
+  public selectedMoments: Moment[] = [
+    moment('2019-03-11T08:00:00+11:00').tz('Australia/Sydney'),
+    moment('2019-03-11T15:00:00+11:00').tz('Australia/Sydney')
+  ];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -29,6 +58,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   activeMediaQuery = '';
 
   constructor(mediaObserver: MediaObserver,
+              private router: Router,
+              private route: ActivatedRoute,
               private analyticsService: AnalyticsService) {
     this.watcher = mediaObserver
       .asObservable()
@@ -53,14 +84,26 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.analyticsService
-      .readAll()
-      .subscribe(analytics => {
-        this.dataSource = new MatTableDataSource<TRiskResRow>(analytics.risk_res);
-        this.dataSource.paginator = this.paginator;
-        this.ethnicity_agg = analytics.ethnicity_agg;
-        this.step_2 = analytics.step_2;
-        this.graphInit();
+    this.route
+      .queryParamMap
+      .subscribe(params => {
+        if (params.has('startDatetime'))
+          this.selectedMoments[0] = moment(params.get('startDatetime')).tz('Australia/Sydney');
+        if (params.has('endDatetime'))
+          this.selectedMoments[1] = moment(params.get('endDatetime')).tz('Australia/Sydney');
+
+        this.analyticsService
+          .readAll(new HttpParams()
+            .set('startDatetime', encodeURIComponent(this.selectedMoments[0].toISOString(true)))
+            .set('endDatetime', encodeURIComponent(this.selectedMoments[1].toISOString(true)))
+          )
+          .subscribe(analytics => {
+            this.dataSource = new MatTableDataSource<TRiskResRow>(analytics.risk_res);
+            this.dataSource.paginator = this.paginator;
+            this.ethnicity_agg = analytics.ethnicity_agg;
+            this.step_2 = analytics.step_2;
+            this.graphInit();
+          });
       });
   }
 
@@ -85,5 +128,18 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
         }))(riskid_to_risk.get(k)))
       }))
       .filter(o => o.series.length);
+  }
+
+  toDateRange() {
+    this.router.navigate([],
+      {
+        relativeTo: this.route,
+        queryParams: {
+          startDatetime: this.selectedMoments[0].toISOString(true),
+          endDatetime: this.selectedMoments[1].toISOString(true)
+        },
+        queryParamsHandling: 'merge',
+        replaceUrl: true
+      });
   }
 }
