@@ -10,6 +10,7 @@ import { CdkTableModule } from '@angular/cdk/table';
 import {
   MatButtonModule,
   MatCardModule,
+  MatExpansionModule,
   MatFormFieldModule,
   MatInputModule,
   MatPaginatorModule,
@@ -20,13 +21,13 @@ import {
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { OwlDateTimeModule } from 'ng-pick-datetime';
+import { OwlMomentDateTimeModule } from 'ng-pick-datetime/date-time/adapter/moment-adapter/moment-date-time.module';
 
 import { RiskResService } from '../../api/risk_res/risk_res.service';
 import { RiskResDataComponent } from '../risk-res-data/risk-res-data.component';
 import { AnalyticsService } from '../../api/analytics/analytics.service';
 import { AnalyticsComponent } from './analytics.component';
 import { analyticsRoutes } from './analytics.routes';
-import { OwlMomentDateTimeModule } from 'ng-pick-datetime/date-time/adapter/moment-adapter/moment-date-time.module';
 
 
 @NgModule({
@@ -35,9 +36,9 @@ import { OwlMomentDateTimeModule } from 'ng-pick-datetime/date-time/adapter/mome
     CommonModule, FormsModule, RouterModule, RouterModule.forChild(analyticsRoutes),
     FlexLayoutModule,
     CdkTableModule,
-    MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatPaginatorModule, MatTableModule, MatTabsModule,
+    MatButtonModule, MatCardModule, MatExpansionModule, MatFormFieldModule,
+    MatInputModule, MatPaginatorModule, MatTableModule, MatTabsModule,
     NgxChartsModule,
-
     OwlDateTimeModule, OwlMomentDateTimeModule
     // MatMomentDateModule,
 

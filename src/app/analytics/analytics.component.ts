@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 
@@ -7,11 +7,11 @@ import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { Subscription } from 'rxjs';
 
 import { ISingleSeries, TRiskResRow } from '../../api/risk_res/risk_res.services.d';
-import { IAnalyticsResponse } from '../../api/analytics/analytics.services.d';
+import { IAnalyticsResponse, IRowWise } from '../../api/analytics/analytics.services.d';
 import { AnalyticsService } from '../../api/analytics/analytics.service';
 
 import * as moment from 'moment-timezone';
-import { DateTimeAdapter, OWL_DATE_TIME_FORMATS, OWL_DATE_TIME_LOCALE } from 'ng-pick-datetime';
+import { DateTimeAdapter, OWL_DATE_TIME_FORMATS, OWL_DATE_TIME_LOCALE, OwlDateTimeComponent } from 'ng-pick-datetime';
 import { MomentDateTimeAdapter } from 'ng-pick-datetime/date-time/adapter/moment-adapter/moment-date-time-adapter.class';
 import { OWL_MOMENT_DATE_TIME_FORMATS } from 'ng-pick-datetime/date-time/adapter/moment-adapter/moment-date-time-format.class';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -40,12 +40,18 @@ moment().tz('Australia/Sydney').format();
     { provide: OWL_DATE_TIME_FORMATS, useValue: OWL_MOMENT_DATE_TIME_FORMATS },
   ]
 })
-export class AnalyticsComponent implements OnInit, OnDestroy {
-  dataSource: MatTableDataSource<TRiskResRow> = null;
+export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
+  risk_res_table: MatTableDataSource<TRiskResRow> = null;
   age_distr: Array<{name: string, series: ISingleSeries[]}>;
   ethnicity_agg: ISingleSeries[];
   view: [number, number] = [250, 250];
   step_2: IAnalyticsResponse['step_2'];
+  row_wise_age: IRowWise;
+  row_wise_client_risk: IRowWise;
+  row_wise_columns: string[];
+
+  @ViewChild('date_range_component')
+  date_range_component: OwlDateTimeComponent<AnalyticsComponent>;
 
   public selectedMoments: Moment[] = [
     moment('2019-03-11T08:00:00+11:00').tz('Australia/Sydney'),
@@ -98,13 +104,23 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
             .set('endDatetime', encodeURIComponent(this.selectedMoments[1].toISOString(true)))
           )
           .subscribe(analytics => {
-            this.dataSource = new MatTableDataSource<TRiskResRow>(analytics.risk_res);
-            this.dataSource.paginator = this.paginator;
+            this.risk_res_table = new MatTableDataSource<TRiskResRow>(analytics.row_wise_stats.risk_res);
+            this.risk_res_table.paginator = this.paginator;
             this.ethnicity_agg = analytics.ethnicity_agg;
             this.step_2 = analytics.step_2;
+            this.row_wise_age = analytics.row_wise_stats.column.age;
+            this.row_wise_client_risk = analytics.row_wise_stats.column.client_risk;
+            this.row_wise_columns = Object.keys(analytics.row_wise_stats.column.age);
             this.graphInit();
+            this.date_range_component.confirmSelectedChange.subscribe(
+              n => this.toDateRange()
+            );
           });
       });
+  }
+
+  ngAfterContentInit() {
+    // this.date_range_component.open();
   }
 
   private graphInit() {
@@ -113,7 +129,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       k => age_to_riskids.set(k, [])
     );
     const riskid_to_risk = new Map<number, TRiskResRow>();
-    this.dataSource.data.forEach(risk_res => {
+    this.risk_res_table.data.forEach(risk_res => {
       riskid_to_risk.set(risk_res.id, risk_res);
       const k = Math.floor(risk_res.age / 10);
       age_to_riskids.set(k, age_to_riskids.get(k).concat(risk_res.id));

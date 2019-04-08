@@ -1,15 +1,14 @@
-<button routerLink="/secret-dashboard" mat-button>⇦ back</button>
+<button routerLink="/" mat-button>⇦ back</button>
 
 <div fxLayout="row" style="padding: 30px 0" fxLayoutGap="20px">
-<div fxFlex="40">
-    <label for="daterange" style="display: none">Datetime range:</label>
+  <div fxFlex="40">
+    <label for="daterange">Datetime range (click to modify):</label>
     <input [(ngModel)]="selectedMoments" [selectMode]="'range'"
-           [owlDateTimeTrigger]="dtPicker3" [owlDateTime]="dtPicker3"
+           [owlDateTimeTrigger]="date_range_component" [owlDateTime]="date_range_component"
            style="width: 100%; color: cornflowerblue"
            id="daterange" matInput>
-    <owl-date-time #dtPicker3></owl-date-time>
-</div>
-    <button fxFlex="30" mat-raised-button (click)="toDateRange()">Set datetime range</button>
+    <owl-date-time #date_range_component></owl-date-time>
+  </div>
 
   <!--
   <input [matDatepicker]="pickerStart" id="start" fxFlex="30">
@@ -18,7 +17,7 @@
 </div>
 
 <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px"
-     *ngIf="dataSource != null && dataSource.data.length">
+     *ngIf="risk_res_table != null && risk_res_table.data.length">
   <mat-card fxFlex>
     <mat-card-title>Calculations</mat-card-title>
     <mat-card-content>
@@ -57,13 +56,45 @@
       <h2 style="color: red">{{step_2.greatest}}</h2>
     </mat-card-content>
   </mat-card>
+
+  <mat-expansion-panel fxFlex *ngIf="row_wise_age != null">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Stats for age
+      </mat-panel-title>
+      <mat-panel-description>
+        Avg, max, &etc.
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <dl *ngFor="let column of row_wise_columns">
+      <dt>{{column}}</dt>
+      <dd>{{row_wise_age[column]}}</dd>
+    </dl>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel fxFlex *ngIf="row_wise_client_risk != null">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Stats for client risk
+      </mat-panel-title>
+      <mat-panel-description>
+        Avg, max, &etc.
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <dl *ngFor="let column of row_wise_columns">
+      <dt>{{column}}</dt>
+      <dd>{{row_wise_client_risk[column]}}</dd>
+    </dl>
+  </mat-expansion-panel>
 </div>
 
-<div class="mat-elevation-z8" *ngIf="dataSource != null">
+<div class="mat-elevation-z8" *ngIf="risk_res_table != null">
   <mat-tab-group selectedIndex="1">
     <mat-tab label="Step 1"> TODO: show this</mat-tab>
     <mat-tab label="Step 2">
-      <app-risk-res-data [dataSource]="dataSource"></app-risk-res-data>
+      <app-risk-res-data [dataSource]="risk_res_table"></app-risk-res-data>
     </mat-tab>
     <mat-tab label="Step 3"> TODO: show this</mat-tab>
   </mat-tab-group>
