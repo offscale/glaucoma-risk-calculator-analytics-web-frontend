@@ -13,7 +13,7 @@ import {
   MatExpansionModule,
   MatFormFieldModule,
   MatInputModule,
-  MatPaginatorModule,
+  MatPaginatorModule, MatSnackBarModule,
   MatTableModule,
   MatTabsModule
 } from '@angular/material';
@@ -28,15 +28,16 @@ import { RiskResDataComponent } from '../risk-res-data/risk-res-data.component';
 import { AnalyticsService } from '../../api/analytics/analytics.service';
 import { AnalyticsComponent } from './analytics.component';
 import { analyticsRoutes } from './analytics.routes';
+import { SurveyDataComponent } from '../survey-data/survey-data.component';
 
 
 @NgModule({
-  declarations: [AnalyticsComponent, RiskResDataComponent],
+  declarations: [AnalyticsComponent, RiskResDataComponent, SurveyDataComponent],
   imports: [
     CommonModule, FormsModule, RouterModule, RouterModule.forChild(analyticsRoutes),
     FlexLayoutModule,
     CdkTableModule,
-    MatButtonModule, MatCardModule, MatExpansionModule, MatFormFieldModule,
+    MatButtonModule, MatCardModule, MatExpansionModule, MatFormFieldModule, MatSnackBarModule,
     MatInputModule, MatPaginatorModule, MatTableModule, MatTabsModule,
     NgxChartsModule,
     OwlDateTimeModule, OwlMomentDateTimeModule

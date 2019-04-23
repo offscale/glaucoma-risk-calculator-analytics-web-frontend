@@ -2,12 +2,12 @@ import { AfterContentInit, Component, OnDestroy, OnInit, ViewChild } from '@angu
 
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatSnackBar, MatTableDataSource } from '@angular/material';
 
 import { Subscription } from 'rxjs';
 
 import { ISingleSeries, TRiskResRow } from '../../api/risk_res/risk_res.services.d';
-import { IAnalyticsResponse, IRowWise } from '../../api/analytics/analytics.services.d';
+import { IAnalyticsResponse, IRowWise, ISurvey } from '../../api/analytics/analytics.services.d';
 import { AnalyticsService } from '../../api/analytics/analytics.service';
 
 import * as moment from 'moment-timezone';
@@ -16,7 +16,7 @@ import { MomentDateTimeAdapter } from 'ng-pick-datetime/date-time/adapter/moment
 import { OWL_MOMENT_DATE_TIME_FORMATS } from 'ng-pick-datetime/date-time/adapter/moment-adapter/moment-date-time-format.class';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Moment } from 'moment';
-import { HttpParams } from '@angular/common/http';
+import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 
 moment().tz('Australia/Sydney').format();
 
@@ -42,6 +42,8 @@ moment().tz('Australia/Sydney').format();
 })
 export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
   risk_res_table: MatTableDataSource<TRiskResRow> = null;
+  survey_table: MatTableDataSource<ISurvey> = null;
+
   age_distr: Array<{name: string, series: ISingleSeries[]}>;
   ethnicity_agg: ISingleSeries[];
   view: [number, number] = [250, 250];
@@ -66,6 +68,7 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
   constructor(mediaObserver: MediaObserver,
               private router: Router,
               private route: ActivatedRoute,
+              private snackBar: MatSnackBar,
               private analyticsService: AnalyticsService) {
     this.watcher = mediaObserver
       .asObservable()
@@ -106,6 +109,10 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
           .subscribe(analytics => {
             this.risk_res_table = new MatTableDataSource<TRiskResRow>(analytics.row_wise_stats.risk_res);
             this.risk_res_table.paginator = this.paginator;
+
+            this.survey_table = new MatTableDataSource<ISurvey>(analytics.survey_tbl);
+            this.risk_res_table.paginator = this.paginator;
+
             this.ethnicity_agg = analytics.ethnicity_agg;
             this.step_2 = analytics.step_2;
             this.row_wise_age = analytics.row_wise_stats.column.age;
@@ -115,6 +122,13 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
             this.date_range_component.confirmSelectedChange.subscribe(
               n => this.toDateRange()
             );
+          }, (err: HttpErrorResponse) => {
+            if (err.status === 404)
+              this.snackBar
+                .open('No data found', 'Choose different date range')
+                .afterDismissed()
+                .subscribe(() => this.date_range_component.confirmSelect() );
+            else console.error('AnalyticsComponent::ngOnInit::analyticsService.readAll(_)::err', err, ';');
           });
       });
   }

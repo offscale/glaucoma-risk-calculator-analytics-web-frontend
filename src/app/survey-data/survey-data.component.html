@@ -1,0 +1,61 @@
+<table mat-table [dataSource]="dataSource">
+  <!-- id Column -->
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef> id</th>
+    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+  </ng-container>
+
+
+  <!-- perceived_risk Column -->
+  <ng-container matColumnDef="perceived_risk">
+    <th mat-header-cell *matHeaderCellDef> perceived_risk</th>
+    <td mat-cell *matCellDef="let element"> {{element.perceived_risk}} </td>
+  </ng-container>
+
+  <!-- recruiter Column -->
+  <ng-container matColumnDef="recruiter">
+    <th mat-header-cell *matHeaderCellDef> recruiter</th>
+    <td mat-cell *matCellDef="let element"> {{element.recruiter}} </td>
+  </ng-container>
+
+  <!-- eye_test_frequency Column -->
+  <ng-container matColumnDef="eye_test_frequency">
+    <th mat-header-cell *matHeaderCellDef> eye_test_frequency</th>
+    <td mat-cell *matCellDef="let element"> {{element.eye_test_frequency}} </td>
+  </ng-container>
+
+  <!-- glasses_use Column -->
+  <ng-container matColumnDef="glasses_use">
+    <th mat-header-cell *matHeaderCellDef> glasses_use</th>
+    <td mat-cell *matCellDef="let element"> {{element.glasses_use}} </td>
+  </ng-container>
+
+  <!-- behaviour_change Column -->
+  <ng-container matColumnDef="behaviour_change">
+    <th mat-header-cell *matHeaderCellDef> behaviour_change</th>
+    <td mat-cell *matCellDef="let element"> {{element.behaviour_change}} </td>
+  </ng-container>
+
+  <!-- risk_res_id Column -->
+  <ng-container matColumnDef="risk_res_id">
+    <th mat-header-cell *matHeaderCellDef> risk_res_id</th>
+    <td mat-cell *matCellDef="let element"> {{element.risk_res_id}} </td>
+  </ng-container>
+
+  <!-- createdAt Column -->
+  <ng-container matColumnDef="createdAt">
+    <th mat-header-cell *matHeaderCellDef> createdAt</th>
+    <td mat-cell *matCellDef="let element"> {{element.createdAt}} </td>
+  </ng-container>
+
+  <!-- updatedAt Column -->
+  <ng-container matColumnDef="updatedAt">
+    <th mat-header-cell *matHeaderCellDef> updatedAt</th>
+    <td mat-cell *matCellDef="let element"> {{element.updatedAt}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
