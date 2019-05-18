@@ -1,24 +1,28 @@
 import { AfterContentInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { FormGroup } from '@angular/forms';
 
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 
 import { MatPaginator, MatSnackBar, MatTableDataSource } from '@angular/material';
 
+import { MAT_DATETIME_FORMATS } from '@mat-datetimepicker/core';
+
 import { Subscription } from 'rxjs';
+
+import * as moment from 'moment-timezone';
+import { Moment } from 'moment';
+import { OwlDateTimeComponent } from 'ng-pick-datetime';
+
+import * as math from 'mathjs';
 
 import { ISingleSeries, TRiskResRow } from '../../api/risk_res/risk_res.services.d';
 import { IAnalyticsResponse, IRowWise, ISurvey } from '../../api/analytics/analytics.services.d';
 import { AnalyticsService } from '../../api/analytics/analytics.service';
+import { PyAnalyticsService } from '../../api/py_analytics/py-analytics.service';
+import { IPyAnalyticsResponse } from '../../api/py_analytics/analytics.services';
 
-import * as moment from 'moment-timezone';
-import { DateTimeAdapter, OWL_DATE_TIME_FORMATS, OWL_DATE_TIME_LOCALE, OwlDateTimeComponent } from 'ng-pick-datetime';
-import { MomentDateTimeAdapter } from 'ng-pick-datetime/date-time/adapter/moment-adapter/moment-date-time-adapter.class';
-import { OWL_MOMENT_DATE_TIME_FORMATS } from 'ng-pick-datetime/date-time/adapter/moment-adapter/moment-date-time-format.class';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Moment } from 'moment';
-import { HttpErrorResponse, HttpParams } from '@angular/common/http';
-
-moment().tz('Australia/Sydney').format();
 
 @Component({
   selector: 'app-analytics',
@@ -33,11 +37,32 @@ moment().tz('Australia/Sydney').format();
   ]*/
 
   providers: [
+    {
+      provide: MAT_DATETIME_FORMATS,
+      useValue: {
+        parse: {
+          dateInput: 'L',
+          monthInput: 'MMMM',
+          timeInput: 'LT',
+          datetimeInput: 'L LT'
+        },
+        display: {
+          dateInput: 'L',
+          monthInput: 'MMMM',
+          datetimeInput: 'L LT',
+          timeInput: 'LT',
+          monthYearLabel: 'MMM YYYY',
+          dateA11yLabel: 'LL',
+          monthYearA11yLabel: 'MMMM YYYY',
+          popupHeaderDateLabel: 'ddd, DD MMM'
+        }
+      }
+    }
     // `MomentDateTimeAdapter` and `OWL_MOMENT_DATE_TIME_FORMATS` can be automatically provided by importing
     // `OwlMomentDateTimeModule` in your applications root module. We provide it at the component level
     // here, due to limitations of our example generation script.
-    { provide: DateTimeAdapter, useClass: MomentDateTimeAdapter, deps: [OWL_DATE_TIME_LOCALE] },
-    { provide: OWL_DATE_TIME_FORMATS, useValue: OWL_MOMENT_DATE_TIME_FORMATS },
+    /*{ provide: DateTimeAdapter, useClass: MomentDateTimeAdapter, deps: [OWL_DATE_TIME_LOCALE] },
+    { provide: OWL_DATE_TIME_FORMATS, useValue: OWL_MOMENT_DATE_TIME_FORMATS },*/
   ]
 })
 export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
@@ -64,12 +89,15 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
 
   watcher: Subscription;
   activeMediaQuery = '';
+  group: FormGroup;
+  pyAnalyticsData: IPyAnalyticsResponse;
 
   constructor(mediaObserver: MediaObserver,
               private router: Router,
               private route: ActivatedRoute,
               private snackBar: MatSnackBar,
-              private analyticsService: AnalyticsService) {
+              private analyticsService: AnalyticsService,
+              private pyAnalyticsService: PyAnalyticsService) {
     this.watcher = mediaObserver
       .asObservable()
       .subscribe((changes: MediaChange[]) => {
@@ -101,11 +129,12 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
         if (params.has('endDatetime'))
           this.selectedMoments[1] = moment(params.get('endDatetime')).tz('Australia/Sydney');
 
+        const dt = new HttpParams()
+          .set('startDatetime', encodeURIComponent(this.selectedMoments[0].toISOString(true)))
+          .set('endDatetime', encodeURIComponent(this.selectedMoments[1].toISOString(true)));
+
         this.analyticsService
-          .readAll(new HttpParams()
-            .set('startDatetime', encodeURIComponent(this.selectedMoments[0].toISOString(true)))
-            .set('endDatetime', encodeURIComponent(this.selectedMoments[1].toISOString(true)))
-          )
+          .readAll(dt)
           .subscribe(analytics => {
             this.risk_res_table = new MatTableDataSource<TRiskResRow>(analytics.row_wise_stats.risk_res);
             this.risk_res_table.paginator = this.paginator;
@@ -119,15 +148,23 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
             this.row_wise_client_risk = analytics.row_wise_stats.column.client_risk;
             this.row_wise_columns = Object.keys(analytics.row_wise_stats.column.age);
             this.graphInit();
-            this.date_range_component.confirmSelectedChange.subscribe(
-              n => this.toDateRange()
-            );
+            if (this.date_range_component != null)
+              this.date_range_component.confirmSelectedChange
+                .subscribe(n => this.toDateRange());
+            this.pyAnalyticsService
+              .read(dt)
+              .subscribe(data =>
+                console.info('pyAnalyticsData._out:', data._out, ';'
+                ) as any || (this.pyAnalyticsData = ((): IPyAnalyticsResponse => {
+                  data.completed = parseFloat(math.multiply(data.completed, 100).toPrecision(5));
+                  return data;
+                })()));
           }, (err: HttpErrorResponse) => {
             if (err.status === 404)
               this.snackBar
                 .open('No data found', 'Choose different date range')
                 .afterDismissed()
-                .subscribe(() => this.date_range_component.confirmSelect() );
+                .subscribe(() => this.date_range_component.confirmSelect());
             else console.error('AnalyticsComponent::ngOnInit::analyticsService.readAll(_)::err', err, ';');
           });
       });

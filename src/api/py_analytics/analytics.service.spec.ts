@@ -2,16 +2,16 @@
 
 import { inject, TestBed } from '@angular/core/testing';
 
-import { AnalyticsService } from './analytics.service';
+import { PyAnalyticsService } from './py-analytics.service';
 
 describe('PyAnalyticsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [AnalyticsService]
+      providers: [PyAnalyticsService]
     });
   });
 
-  it('should ...', inject([AnalyticsService], (service: AnalyticsService) => {
+  it('should ...', inject([PyAnalyticsService], (service: PyAnalyticsService) => {
     expect(service).toBeTruthy();
   }));
 });
