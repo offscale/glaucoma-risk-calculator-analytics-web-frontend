@@ -7,15 +7,12 @@ import { MediaChange, MediaObserver } from '@angular/flex-layout';
 
 import { MatPaginator, MatSnackBar, MatTableDataSource } from '@angular/material';
 
-import { MAT_DATETIME_FORMATS } from '@mat-datetimepicker/core';
-
 import { Subscription } from 'rxjs';
+
+import * as math from 'mathjs';
 
 import * as moment from 'moment-timezone';
 import { Moment } from 'moment';
-import { OwlDateTimeComponent } from 'ng-pick-datetime';
-
-import * as math from 'mathjs';
 
 import { ISingleSeries, TRiskResRow } from '../../api/risk_res/risk_res.services.d';
 import { IAnalyticsResponse, IRowWise, ISurvey } from '../../api/analytics/analytics.services.d';
@@ -27,43 +24,7 @@ import { IPyAnalyticsResponse } from '../../api/py_analytics/analytics.services'
 @Component({
   selector: 'app-analytics',
   templateUrl: './analytics.component.html',
-  styleUrls: ['./analytics.component.css'],
-  /*providers: [
-    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
-    // `MatMomentDateModule` in your applications root module. We provide it at the component level
-    // here, due to limitations of our example generation script.
-    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
-    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
-  ]*/
-
-  providers: [
-    {
-      provide: MAT_DATETIME_FORMATS,
-      useValue: {
-        parse: {
-          dateInput: 'L',
-          monthInput: 'MMMM',
-          timeInput: 'LT',
-          datetimeInput: 'L LT'
-        },
-        display: {
-          dateInput: 'L',
-          monthInput: 'MMMM',
-          datetimeInput: 'L LT',
-          timeInput: 'LT',
-          monthYearLabel: 'MMM YYYY',
-          dateA11yLabel: 'LL',
-          monthYearA11yLabel: 'MMMM YYYY',
-          popupHeaderDateLabel: 'ddd, DD MMM'
-        }
-      }
-    }
-    // `MomentDateTimeAdapter` and `OWL_MOMENT_DATE_TIME_FORMATS` can be automatically provided by importing
-    // `OwlMomentDateTimeModule` in your applications root module. We provide it at the component level
-    // here, due to limitations of our example generation script.
-    /*{ provide: DateTimeAdapter, useClass: MomentDateTimeAdapter, deps: [OWL_DATE_TIME_LOCALE] },
-    { provide: OWL_DATE_TIME_FORMATS, useValue: OWL_MOMENT_DATE_TIME_FORMATS },*/
-  ]
+  styleUrls: ['./analytics.component.css']
 })
 export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
   risk_res_table: MatTableDataSource<TRiskResRow> = null;
@@ -77,15 +38,14 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
   row_wise_client_risk: IRowWise;
   row_wise_columns: string[];
 
-  @ViewChild('date_range_component')
-  date_range_component: OwlDateTimeComponent<AnalyticsComponent>;
+  not_found_date_range = false;
 
   public selectedMoments: Moment[] = [
     moment('2019-03-11T08:00:00+11:00').tz('Australia/Sydney'),
     moment('2019-03-11T15:00:00+11:00').tz('Australia/Sydney')
   ];
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   watcher: Subscription;
   activeMediaQuery = '';
@@ -124,14 +84,14 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
     this.route
       .queryParamMap
       .subscribe(params => {
-        if (params.has('startDatetime'))
-          this.selectedMoments[0] = moment(params.get('startDatetime')).tz('Australia/Sydney');
-        if (params.has('endDatetime'))
-          this.selectedMoments[1] = moment(params.get('endDatetime')).tz('Australia/Sydney');
+        if (params.has('from'))
+          this.selectedMoments[0] = moment(params.get('from')).tz('Australia/Sydney');
+        if (params.has('to'))
+          this.selectedMoments[1] = moment(params.get('to')).tz('Australia/Sydney');
 
         const dt = new HttpParams()
-          .set('startDatetime', encodeURIComponent(this.selectedMoments[0].toISOString(true)))
-          .set('endDatetime', encodeURIComponent(this.selectedMoments[1].toISOString(true)));
+          .set('from', encodeURIComponent(this.selectedMoments[0].toISOString(true)))
+          .set('to', encodeURIComponent(this.selectedMoments[1].toISOString(true)));
 
         this.analyticsService
           .readAll(dt)
@@ -148,9 +108,11 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
             this.row_wise_client_risk = analytics.row_wise_stats.column.client_risk;
             this.row_wise_columns = Object.keys(analytics.row_wise_stats.column.age);
             this.graphInit();
+            /*
             if (this.date_range_component != null)
               this.date_range_component.confirmSelectedChange
                 .subscribe(n => this.toDateRange());
+             */
             this.pyAnalyticsService
               .read(dt)
               .subscribe(data =>
@@ -160,11 +122,13 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
                   return data;
                 })()));
           }, (err: HttpErrorResponse) => {
-            if (err.status === 404)
+            if (err.status === 404) {
+              this.not_found_date_range = true;
               this.snackBar
                 .open('No data found', 'Choose different date range')
                 .afterDismissed()
-                .subscribe(() => this.date_range_component.confirmSelect());
+                .subscribe(() => /*this.date_range_component.confirmSelect()*/ void 0);
+            }
             else console.error('AnalyticsComponent::ngOnInit::analyticsService.readAll(_)::err', err, ';');
           });
       });
@@ -202,8 +166,8 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
       {
         relativeTo: this.route,
         queryParams: {
-          startDatetime: this.selectedMoments[0].toISOString(true),
-          endDatetime: this.selectedMoments[1].toISOString(true)
+          from: this.selectedMoments[0].toISOString(true),
+          to: this.selectedMoments[1].toISOString(true)
         },
         queryParamsHandling: 'merge',
         replaceUrl: true

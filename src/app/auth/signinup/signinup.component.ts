@@ -32,7 +32,7 @@ export class SigninupComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     if (AuthService.loggedIn())
       this.router
-        .navigate([getRedirectUrl(location.href) || '/secret-dashboard'])
+        .navigate([getRedirectUrl(location.href) || '/'])
         .then(() => {});
   }
 

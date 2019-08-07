@@ -16,6 +16,6 @@
       </button>
     </form>
 
-    <p *ngIf="authService.loggedIn()">You are logged in.</p>
+    <p *ngIf="authService.loggedIn()">You are logged in. <a routerLink="/">Go to dashboard</a></p>
   </mat-card-content>
 </mat-card>

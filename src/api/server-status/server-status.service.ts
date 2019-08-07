@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
-import { IServerStatus } from './server-status.interfaces';
+import { IPyServerStatus, IServerStatus } from './server-status.interfaces';
 
 
 @Injectable()
@@ -12,5 +12,9 @@ export class ServerStatusService {
 
   get(): Observable<IServerStatus> {
     return this.http.get<IServerStatus>('/api');
+  }
+
+  getPy(): Observable<IPyServerStatus> {
+    return this.http.get<IPyServerStatus>('/api/py/analytics/status');
   }
 }

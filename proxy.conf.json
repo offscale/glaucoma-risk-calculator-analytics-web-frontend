@@ -1,5 +1,5 @@
 {
-  "/api/py/analytics": {
+  "/api/py": {
     "target": "http://localhost:5555",
     "secure": false
   },

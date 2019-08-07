@@ -22,7 +22,7 @@ export class SidenavComponent implements AfterContentInit {
     .pipe(map(result => result.matches));
 
   @Input() openedSubject: Subject<boolean>;
-  @ViewChild('sidenav') sidenav: MatSidenav;
+  @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
 
   constructor(private breakpointObserver: BreakpointObserver,
               private router: Router) {

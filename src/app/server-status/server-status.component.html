@@ -1,3 +1,3 @@
 <mat-toolbar-row *ngIf="serverStatus.version">
-  {{serverStatus.version}}
+  <small>{{serverStatus.version}}; py {{pyServerStatus.rest_api_version}}</small>
 </mat-toolbar-row>
