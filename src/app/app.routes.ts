@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { URLSearchParams } from '@angular/http';
 
 import { AuthGuard } from './auth/auth.guard';
 
@@ -20,9 +19,4 @@ export const appRoutes: Routes = [
   },
 ];
 
-export const getRedirectUrl = (url: string): string | null => ((question: number): string | null => {
-  if (question < 0) return;
-  const m = new URLSearchParams(url.slice(question + 1)).paramsMap;
-  return m.has('redirectUrl') ? decodeURIComponent(m.get('redirectUrl')[0]) : null;
-})(url.indexOf('?'));
-
+export const getRedirectUrl = (url: string): string | null => new URLSearchParams(url.slice(1)).get('redirectUrl');
