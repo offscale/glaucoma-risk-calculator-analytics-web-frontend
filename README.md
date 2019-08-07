@@ -1,4 +1,4 @@
-glaucoma-risk-calculator-analytics
+glaucoma-risk-calculator-analytics-web-frontend
 ==================================
 
 Analytics and administrator interface for the glaucoma-risk-calculator.
@@ -8,9 +8,9 @@ Analytics and administrator interface for the glaucoma-risk-calculator.
     sed -i "/this.serverStatus =/c\    this.serverStatus = { version: '@ $(jq -r .version package.json); '};" src/app/server-status/server-status.component.ts
 
 ## Deploy distribution
-Clone [glaucoma-risk-calculator-analytics-dist](https://github.com/SamuelMarks/glaucoma-risk-calculator-analytics-dist) one directory above, then:
+Clone [glaucoma-risk-calculator-analytics-web-frontend-dist](https://github.com/SamuelMarks/glaucoma-risk-calculator-analytics-web-frontend-dist) one directory above, then:
 
-    rm -rf dist; ng build --prod --base-href /admin/ && d=../glaucoma-risk-calculator-analytics-dist && rm -rf "$d/dist" && mv "$PWD/dist/${PWD##*/}/" "$d/dist" && cd "$d" && (git add .; git status) || ( >&2 echo BUILD FAILED )
+    rm -rf dist; ng build --prod --base-href /admin/ && d=../glaucoma-risk-calculator-analytics-web-frontend-dist && rm -rf "$d/dist" && mv "$PWD/dist/${PWD##*/}/" "$d/dist" && cd "$d" && (git add .; git status) || ( >&2 echo BUILD FAILED )
 
 ---
 
