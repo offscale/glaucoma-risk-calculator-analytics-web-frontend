@@ -15,6 +15,6 @@ export class ServerStatusService {
   }
 
   getPy(): Observable<IPyServerStatus> {
-    return this.http.get<IPyServerStatus>('/api/py/analytics/status');
+    return this.http.get<IPyServerStatus>('/api/py');
   }
 }
