@@ -84,14 +84,14 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
     this.route
       .queryParamMap
       .subscribe(params => {
-        if (params.has('from'))
-          this.selectedMoments[0] = moment(params.get('from')).tz('Australia/Sydney');
-        if (params.has('to'))
-          this.selectedMoments[1] = moment(params.get('to')).tz('Australia/Sydney');
+        if (params.has('startDatetime'))
+          this.selectedMoments[0] = moment(params.get('startDatetime')).tz('Australia/Sydney');
+        if (params.has('endDatetime'))
+          this.selectedMoments[1] = moment(params.get('endDatetime')).tz('Australia/Sydney');
 
         const dt = new HttpParams()
-          .set('from', encodeURIComponent(this.selectedMoments[0].toISOString(true)))
-          .set('to', encodeURIComponent(this.selectedMoments[1].toISOString(true)));
+          .set('startDatetime', encodeURIComponent(this.selectedMoments[0].toISOString(true)))
+          .set('endDatetime', encodeURIComponent(this.selectedMoments[1].toISOString(true)));
 
         this.analyticsService
           .readAll(dt)

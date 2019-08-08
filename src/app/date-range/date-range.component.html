@@ -1,17 +1,19 @@
 <form [formGroup]="group" (ngSubmit)="submit()">
   <mat-form-field>
     <mat-placeholder>From</mat-placeholder>
-    <input matInput formControlName="from" [min]="from_min" [matDatetimepicker]="from" required>
-    <mat-datetimepicker-toggle #from_toggle [for]="from" matSuffix></mat-datetimepicker-toggle>
-    <mat-datetimepicker #from type="datetime" openOnFocus="true" mode="portrait" timeInterval="5" touchUi="true">
+    <input matInput formControlName="startDatetime" [min]="from_min" [matDatetimepicker]="startDatetime" required>
+    <mat-datetimepicker-toggle [for]="startDatetime" matSuffix></mat-datetimepicker-toggle>
+    <mat-datetimepicker #startDatetime type="datetime" openOnFocus="true"
+                        mode="portrait" timeInterval="5" touchUi="true">
     </mat-datetimepicker>
   </mat-form-field>
 
   <mat-form-field>
     <mat-placeholder>To</mat-placeholder>
-    <input matInput formControlName="to" [min]="to_min" [matDatetimepicker]="to" required>
-    <mat-datetimepicker-toggle #to_toggle [for]="to" matSuffix></mat-datetimepicker-toggle>
-    <mat-datetimepicker #to type="datetime" openOnFocus="true" mode="portrait" timeInterval="5" touchUi="true">
+    <input matInput formControlName="endDatetime" [min]="to_min" [matDatetimepicker]="endDatetime" required>
+    <mat-datetimepicker-toggle [for]="endDatetime" matSuffix></mat-datetimepicker-toggle>
+    <mat-datetimepicker #endDatetime type="datetime" openOnFocus="true"
+                        mode="portrait" timeInterval="5" touchUi="true">
     </mat-datetimepicker>
   </mat-form-field>
 

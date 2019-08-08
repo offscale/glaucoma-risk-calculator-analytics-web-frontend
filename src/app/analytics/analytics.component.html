@@ -1,6 +1,7 @@
 <button routerLink="/" mat-button>⇦ back</button>
 
-<app-date-range [from]="selectedMoments[0].toDate()" [to]="selectedMoments[1].toDate()"></app-date-range>
+<app-date-range [startDatetime]="selectedMoments[0].toDate()" [endDatetime]="selectedMoments[1].toDate()">
+</app-date-range>
 
 <div *ngIf="!pyAnalyticsData">
   <pre>
