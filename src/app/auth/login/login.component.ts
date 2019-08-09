@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('access-token', this.authService.access_token);
 
           this.router
-            .navigate(['/secret-dashboard'])
+            .navigate(['/'])
             .then(() => {});
         }
       );

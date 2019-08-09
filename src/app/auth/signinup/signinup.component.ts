@@ -42,7 +42,7 @@ export class SigninupComponent implements OnInit, AfterViewInit {
       .subscribe((_user: IAuthReq | ILoginResp) => {
           if (_user.hasOwnProperty('access_token')) {
             this.authService._login(_user as ILoginResp);
-            this.router.navigateByUrl(getRedirectUrl(location.href) || '/secret-dashboard')
+            this.router.navigateByUrl(getRedirectUrl(location.href) || '/')
               .then(() => {})
               .catch(console.error);
           } else this.alertsService.add(`Unexpected: ${JSON.stringify(_user)};`);
