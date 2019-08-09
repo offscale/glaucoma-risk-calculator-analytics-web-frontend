@@ -7,7 +7,7 @@ import { MediaChange, MediaObserver } from '@angular/flex-layout';
 
 import { MatPaginator, MatSnackBar, MatTableDataSource } from '@angular/material';
 
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 
 import * as math from 'mathjs';
 
@@ -93,34 +93,40 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
           .set('startDatetime', encodeURIComponent(this.selectedMoments[0].toISOString(true)))
           .set('endDatetime', encodeURIComponent(this.selectedMoments[1].toISOString(true)));
 
-        this.analyticsService
-          .readAll(dt)
-          .subscribe(analytics => {
-            this.risk_res_table = new MatTableDataSource<TRiskResRow>(analytics.row_wise_stats.risk_res);
+        forkJoin([
+          this.analyticsService
+            .readAll(dt),
+          this.pyAnalyticsService
+            .read(dt)
+        ])
+          .subscribe((node_python) => {
+            const node = node_python[0];
+            this.risk_res_table = new MatTableDataSource<TRiskResRow>(node.row_wise_stats.risk_res);
             this.risk_res_table.paginator = this.paginator;
 
-            this.survey_table = new MatTableDataSource<ISurvey>(analytics.survey_tbl);
+            this.survey_table = new MatTableDataSource<ISurvey>(node.survey_tbl);
             this.risk_res_table.paginator = this.paginator;
 
-            this.ethnicity_agg = analytics.ethnicity_agg;
-            this.step_2 = analytics.step_2;
-            this.row_wise_age = analytics.row_wise_stats.column.age;
-            this.row_wise_client_risk = analytics.row_wise_stats.column.client_risk;
-            this.row_wise_columns = Object.keys(analytics.row_wise_stats.column.age);
+            this.ethnicity_agg = node.ethnicity_agg;
+            this.step_2 = node.step_2;
+            this.row_wise_age = node.row_wise_stats.column.age;
+            this.row_wise_client_risk = node.row_wise_stats.column.client_risk;
+            this.row_wise_columns = Object.keys(node.row_wise_stats.column.age);
             this.graphInit();
             /*
             if (this.date_range_component != null)
               this.date_range_component.confirmSelectedChange
                 .subscribe(n => this.toDateRange());
              */
-            this.pyAnalyticsService
-              .read(dt)
-              .subscribe(data =>
-                console.info('pyAnalyticsData._out:', data._out, ';'
-                ) as any || (this.pyAnalyticsData = ((): IPyAnalyticsResponse => {
-                  data.completed = parseFloat(math.multiply(data.completed, 100).toPrecision(5));
-                  return data;
-                })()));
+
+            const python = node_python[1];
+            console.info(python._out[0]);
+            console.info(python._out[1]);
+
+            this.pyAnalyticsData = ((): IPyAnalyticsResponse => {
+              python.completed = parseFloat(math.multiply(python.completed, 100).toPrecision(5));
+              return python;
+            })();
           }, (err: HttpErrorResponse) => {
             if (err.status === 404) {
               this.not_found_date_range = true;
@@ -128,8 +134,7 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
                 .open('No data found', 'Choose different date range')
                 .afterDismissed()
                 .subscribe(() => /*this.date_range_component.confirmSelect()*/ void 0);
-            }
-            else console.error('AnalyticsComponent::ngOnInit::analyticsService.readAll(_)::err', err, ';');
+            } else console.error('AnalyticsComponent::ngOnInit::analyticsService.readAll(_)::err', err, ';');
           });
       });
   }

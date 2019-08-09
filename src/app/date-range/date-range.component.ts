@@ -42,8 +42,8 @@ export class DateRangeComponent implements AfterViewInit {
 
   constructor(private fb: FormBuilder, private snackBar: MatSnackBar, private router: Router) {
     this.group = this.fb.group({
-      startDatetime: [new Date('2017-11-09T12:10:00.000Z'), Validators.required],
-      endDatetime: [new Date('2019-11-09T12:10:00.000Z'), Validators.required]
+      startDatetime: [new Date('2019-03-11T08:00:00+11:00'), Validators.required],
+      endDatetime: [new Date('2019-03-11T15:00:00+11:00'), Validators.required]
     });
   }
 
