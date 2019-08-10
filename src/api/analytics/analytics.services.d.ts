@@ -1,4 +1,4 @@
-import { TRiskResRow, TSingleSeries } from '../risk_res/risk_res.services.d';
+import { IMultiSeries, TRiskResRow, TSingleSeries } from '../risk_res/risk_res.services.d';
 
 export interface IRowWise {
   geometricMean: number;
@@ -36,6 +36,10 @@ export interface IAnalyticsResponse {
     least: number;
   };
   survey_tbl: ISurvey[];
+}
+
+export interface IAnalyticsResponse {
+  step_2_multi_series: IMultiSeries;
 }
 
 export interface ISurvey {

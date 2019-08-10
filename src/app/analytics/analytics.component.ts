@@ -14,7 +14,7 @@ import * as math from 'mathjs';
 import * as moment from 'moment-timezone';
 import { Moment } from 'moment';
 
-import { ISingleSeries, TRiskResRow } from '../../api/risk_res/risk_res.services.d';
+import { IMultiSeries, ISingleSeries, TRiskResRow } from '../../api/risk_res/risk_res.services.d';
 import { IAnalyticsResponse, IRowWise, ISurvey } from '../../api/analytics/analytics.services.d';
 import { AnalyticsService } from '../../api/analytics/analytics.service';
 import { PyAnalyticsService } from '../../api/py_analytics/py-analytics.service';
@@ -37,6 +37,7 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
   row_wise_age: IRowWise;
   row_wise_client_risk: IRowWise;
   row_wise_columns: string[];
+  step_2_multi_series: IMultiSeries;
 
   not_found_date_range = false;
 
@@ -95,23 +96,25 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
 
         forkJoin([
           this.analyticsService
-            .readAll(dt),
+            .readAll0(dt),
+          this.analyticsService
+            .readAll1(dt),
           this.pyAnalyticsService
             .read(dt)
         ])
-          .subscribe((node_python) => {
-            const node = node_python[0];
-            this.risk_res_table = new MatTableDataSource<TRiskResRow>(node.row_wise_stats.risk_res);
+          .subscribe((node__node_python) => {
+            const node0 = node__node_python[0];
+            this.risk_res_table = new MatTableDataSource<TRiskResRow>(node0.row_wise_stats.risk_res);
             this.risk_res_table.paginator = this.paginator;
 
-            this.survey_table = new MatTableDataSource<ISurvey>(node.survey_tbl);
+            this.survey_table = new MatTableDataSource<ISurvey>(node0.survey_tbl);
             this.risk_res_table.paginator = this.paginator;
 
-            this.ethnicity_agg = node.ethnicity_agg;
-            this.step_2 = node.step_2;
-            this.row_wise_age = node.row_wise_stats.column.age;
-            this.row_wise_client_risk = node.row_wise_stats.column.client_risk;
-            this.row_wise_columns = Object.keys(node.row_wise_stats.column.age);
+            this.ethnicity_agg = node0.ethnicity_agg;
+            this.step_2 = node0.step_2;
+            this.row_wise_age = node0.row_wise_stats.column.age;
+            this.row_wise_client_risk = node0.row_wise_stats.column.client_risk;
+            this.row_wise_columns = Object.keys(node0.row_wise_stats.column.age);
             this.graphInit();
             /*
             if (this.date_range_component != null)
@@ -119,7 +122,10 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
                 .subscribe(n => this.toDateRange());
              */
 
-            const python = node_python[1];
+            const node1 = node__node_python[1];
+            this.step_2_multi_series = node1.step_2_multi_series;
+
+            const python = node__node_python[2];
             console.info(python._out[0]);
             console.info(python._out[1]);
 
@@ -134,7 +140,7 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
                 .open('No data found', 'Choose different date range')
                 .afterDismissed()
                 .subscribe(() => /*this.date_range_component.confirmSelect()*/ void 0);
-            } else console.error('AnalyticsComponent::ngOnInit::analyticsService.readAll(_)::err', err, ';');
+            } else console.error('AnalyticsComponent::ngOnInit::analyticsService.readAll0(_)::err', err, ';');
           });
       });
   }

@@ -17,7 +17,11 @@ export class AnalyticsService {
     return this.http.get<IAnalyticsResponse>(`/api/analytics/${id}`);
   }
 
-  readAll(params: HttpParams): Observable<IAnalyticsResponse> {
-    return this.http.get<IAnalyticsResponse>('/api/analytics', {params: params});
+  readAll0(params: HttpParams): Observable<IAnalyticsResponse> {
+    return this.http.get<IAnalyticsResponse>('/api/analytics0', { params });
+  }
+
+  readAll1(params: HttpParams): Observable<IAnalyticsResponse> {
+    return this.http.get<IAnalyticsResponse>('/api/analytics1', { params });
   }
 }

@@ -105,17 +105,30 @@
 
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px"
        style="padding: 30px 0;"
-       *ngIf="step_2 != null" fxFlex>
+       *ngIf="step_2_multi_series != null" fxFlex>
     <mat-card fxFlex>
-      <mat-card-title>Stratified risk</mat-card-title>
+      <mat-card-title>Stratified risk (area chart)</mat-card-title>
       <mat-card-content>
-        <h2>{{step_2.least}}</h2>
-        <h2 style="color: dodgerblue">{{step_2.average}}</h2>
-        <h2 style="color: orangered">{{step_2.high}}</h2>
-        <h2 style="color: red">{{step_2.greatest}}</h2>
+        <ngx-charts-area-chart-normalized
+          [results]="step_2_multi_series">
+        </ngx-charts-area-chart-normalized>
       </mat-card-content>
     </mat-card>
 
+    <mat-card fxFlex>
+      <mat-card-title>Stratified risk (numbers)</mat-card-title>
+      <mat-card-content>
+        <h2 style="color: #AF667D">{{step_2.least}}</h2>
+        <h2 style="color: #9BB5E6">{{step_2.average}}</h2>
+        <h2 style="color: #B099B7">{{step_2.high}}</h2>
+        <h2 style="color: #C4E7F5">{{step_2.greatest}}</h2>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px"
+       style="padding: 30px 0;"
+       *ngIf="step_2 != null" fxFlex>
     <mat-expansion-panel fxFlex *ngIf="row_wise_age != null">
       <mat-expansion-panel-header>
         <mat-panel-title>

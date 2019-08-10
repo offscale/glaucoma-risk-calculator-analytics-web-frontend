@@ -49,7 +49,7 @@ import { analyticsRoutes } from './analytics.routes';
     DateRangeModule
   ],
   // entryComponents: [AnalyticsComponent],
-  // bootstrap: [AnalyticsComponent],
+  bootstrap: [AnalyticsComponent],
   // exports: [AnalyticsComponent],
   providers: [
     RiskResService, AnalyticsService, PyAnalyticsService

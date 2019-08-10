@@ -16,3 +16,8 @@ export interface ISingleSeries {
 }
 
 export type TSingleSeries = Array<{name: string, value: number}>;
+
+interface IMultiSeries {
+  name: string;
+  series: ISingleSeries[];
+}
