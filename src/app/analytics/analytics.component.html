@@ -58,11 +58,13 @@
     <div fxFlex="49">
       <p>Some notable statistics:</p>
       <dl>
-        <dt>completed the final step; and</dt>
-        <dd>{{pyAnalyticsData.completed}}%</dd>
+        <dt>completed the final step</dt>
+        <dd>{{pyAnalyticsData.all_steps}}, i.e.: {{pyAnalyticsData.completed.toPrecision(5)}}%</dd>
 
         <dt>converted (provided their emails)</dt>
-        <dd *ngIf="pyAnalyticsData.email_conversion">{{pyAnalyticsData.email_conversion.toPrecision(5)}}%</dd>
+        <dd *ngIf="pyAnalyticsData.email_conversion">
+          {{pyAnalyticsData.emails}}, i.e.: {{pyAnalyticsData.email_conversion.toPrecision(5)}}%
+        </dd>
         <dd *ngIf="!pyAnalyticsData.email_conversion">234.000 &dagger;
           <p>&dagger;in OPSM event (Monday 11/03/2019 from 8:30AM to 3:30PM AEST)</p>
         </dd>

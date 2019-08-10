@@ -7,5 +7,6 @@ export interface IPyAnalyticsResponse {
   all_steps: number;
   email_conversion: number;
   completed: number;
+  emails: number;
   _out: string;
 }
