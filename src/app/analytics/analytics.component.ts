@@ -15,7 +15,7 @@ import * as moment from 'moment-timezone';
 import { Moment } from 'moment';
 
 import { IMultiSeries, ISingleSeries, TRiskResRow } from '../../api/risk_res/risk_res.services.d';
-import { IAnalyticsResponse, IRowWise, ISurvey } from '../../api/analytics/analytics.services.d';
+import { IAnalyticsResponse, IRowWise, ISurvey } from '../../api/analytics/analytics-types';
 import { AnalyticsService } from '../../api/analytics/analytics.service';
 import { PyAnalyticsService } from '../../api/py_analytics/py-analytics.service';
 import { IPyAnalyticsResponse } from '../../api/py_analytics/analytics.services';

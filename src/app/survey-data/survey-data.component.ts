@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 
-import { ISurvey } from '../../api/analytics/analytics.services.d';
+import { ISurvey } from '../../api/analytics/analytics-types';
 
 @Component({
   selector: 'app-survey-data',
