@@ -21,7 +21,7 @@ export class ServerStatusComponent implements OnInit {
               private alertsService: AlertsService) {}
 
   ngOnInit() {
-    this.serverStatus = { version: '@ 0.0.14; ' };
+    this.serverStatus = { version: '@ 0.0.15; ' };
     forkJoin([
       this.serverStatusService
         .get(),
@@ -29,7 +29,7 @@ export class ServerStatusComponent implements OnInit {
         .getPy()
     ])
       .subscribe((apiVersions: [IServerStatus, IPyServerStatus]) => {
-          this.serverStatus.version += `Node ${apiVersions[0].version}`;
+          this.serverStatus.version += `js ${apiVersions[0].version}`;
           this.pyServerStatus = apiVersions[1];
         },
         (error: HttpErrorResponse) => {

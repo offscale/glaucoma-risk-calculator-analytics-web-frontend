@@ -1,9 +1,10 @@
-import { Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from './auth/auth.guard';
 
 
-export const appRoutes: Routes = [
+const routes: Routes = [
   { path: 'auth', loadChildren: './auth/auth.module#AuthModule' },
   {
     path: 'admin', loadChildren: './admin/admin.module#AdminModule',
@@ -16,7 +17,13 @@ export const appRoutes: Routes = [
   {
     path: 'analytics', loadChildren: './analytics/analytics.module#AnalyticsModule',
     canActivate: [AuthGuard]
-  },
+  }
 ];
 
 export const getRedirectUrl = (url: string): string | null => new URLSearchParams(url.slice(1)).get('redirectUrl');
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }

@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -22,7 +21,7 @@ import { AuthInterceptor } from './auth/auth.interceptors';
 import { AppComponent } from './app.component';
 import { SidenavModule } from './sidenav/sidenav.module';
 import { AlertsModule } from './alerts/alerts.module';
-import { appRoutes } from './app.routes';
+import { AppRoutingModule } from './app-routing.module';
 
 
 @NgModule({
@@ -31,11 +30,10 @@ import { appRoutes } from './app.routes';
   ],
   imports: [
     BrowserModule,
-    RouterModule,
-    RouterModule.forRoot(appRoutes),
     HttpClientModule,
     LayoutModule,
     BrowserAnimationsModule,
+
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
@@ -44,7 +42,8 @@ import { appRoutes } from './app.routes';
     MatGridListModule,
     MatCardModule,
     MatMenuModule,
-    // MatMomentDateModule,
+
+    AppRoutingModule,
     AlertsModule.forRoot(),
     SidenavModule
   ],
@@ -54,7 +53,6 @@ import { appRoutes } from './app.routes';
       useClass: AuthInterceptor,
       multi: true,
     },
-    // MatMomentDateModule
   ],
   bootstrap: [AppComponent]
 })

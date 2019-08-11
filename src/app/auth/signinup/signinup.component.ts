@@ -5,7 +5,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { IAuthReq, ILoginResp } from '../../../api/auth/auth.interfaces';
 import { AuthService } from '../../../api/auth/auth.service';
 import { AlertsService } from '../../alerts/alerts.service';
-import { getRedirectUrl } from '../../app.routes';
+import { getRedirectUrl } from '../../app-routing.module';
+
 
 
 @Component({
@@ -39,13 +40,13 @@ export class SigninupComponent implements OnInit, AfterViewInit {
   signInUp() {
     this.authService
       .signinup(this.form.value as IAuthReq)
-      .subscribe((_user: IAuthReq | ILoginResp) => {
-          if (_user.hasOwnProperty('access_token')) {
-            this.authService._login(_user as ILoginResp);
+      .subscribe((user: IAuthReq | ILoginResp) => {
+          if (user.hasOwnProperty('access_token')) {
+            this.authService._login(user as ILoginResp);
             this.router.navigateByUrl(getRedirectUrl(location.href) || '/')
               .then(() => {})
               .catch(console.error);
-          } else this.alertsService.add(`Unexpected: ${JSON.stringify(_user)};`);
+          } else this.alertsService.add(`Unexpected: ${JSON.stringify(user)};`);
         }
       );
   }

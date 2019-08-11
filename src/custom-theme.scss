@@ -14,8 +14,3 @@ $glaucoma-risk-calculator-web-frontend-theme: mat-light-theme($glaucoma-risk-cal
 @include angular-material-theme($glaucoma-risk-calculator-web-frontend-theme);
 
 @include mat-datetimepicker-theme($glaucoma-risk-calculator-web-frontend-theme);
-
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
