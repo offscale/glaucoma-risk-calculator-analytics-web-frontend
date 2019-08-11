@@ -1,3 +1,22 @@
+.mat-table__wrapper .mat-table {
+  min-width: auto !important;
+  width: 100% !important;
+}
+
+.mat-header-row {
+  width: 100%;
+}
+
+.mat-row {
+  width: 100%;
+}
+
+.mat-column {
+  flex: 0 0 25% !important;
+  min-width: 104px !important;
+}
+
+
 table {
   width: 100%;
 }

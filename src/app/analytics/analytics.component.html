@@ -81,13 +81,15 @@
       <mat-card-title>Calculations</mat-card-title>
       <mat-card-content>
         <h1>{{step_2.count}}</h1>
+        <h3>From: {{selectedMoments[0]}}</h3>
+        <h3>Until: {{selectedMoments[1]}}</h3>
       </mat-card-content>
     </mat-card>
 
     <mat-card fxFlex>
       <mat-card-title>Ethnic distribution</mat-card-title>
-      <mat-card-content>
-        <ngx-charts-pie-chart fxFlex [labels]="true" [results]="ethnicity_agg" [view]="view"
+      <mat-card-content class="hw-100">
+        <ngx-charts-pie-chart fxFlex [labels]="true" [results]="ethnicity_agg"
                               style="text-align: left">
         </ngx-charts-pie-chart>
       </mat-card-content>
@@ -95,9 +97,8 @@
 
     <mat-card fxFlex>
       <mat-card-title>Age distribution</mat-card-title>
-      <mat-card-content>
+      <mat-card-content class="hw-100">
         <ngx-charts-line-chart fxFlex [results]="age_distr"
-                               [view]="view"
                                [yAxis]="true"></ngx-charts-line-chart>
       </mat-card-content>
     </mat-card>
@@ -106,33 +107,41 @@
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px"
        style="padding: 30px 0;"
        *ngIf="step_2_multi_series != null" fxFlex>
-    <mat-card fxFlex>
+    <mat-card fxFlex="80">
       <mat-card-title>Stratified risk (area chart)</mat-card-title>
-      <mat-card-content>
+      <mat-card-content class="hw-100">
         <ngx-charts-area-chart-normalized
-          [results]="step_2_multi_series">
+          [results]="step_2_multi_series"
+          [legend]="true">
         </ngx-charts-area-chart-normalized>
       </mat-card-content>
     </mat-card>
 
-    <mat-card fxFlex>
+    <mat-card fxFlex="20">
       <mat-card-title>Stratified risk (numbers)</mat-card-title>
-      <mat-card-content>
-        <h2 style="color: #AF667D">{{step_2.least}}</h2>
-        <h2 style="color: #9BB5E6">{{step_2.average}}</h2>
-        <h2 style="color: #B099B7">{{step_2.high}}</h2>
-        <h2 style="color: #C4E7F5">{{step_2.greatest}}</h2>
+      <mat-card-content fxLayout="row" fxLayout.lt-md="column">
+        <div fxFlex style="background: #AF667D; text-align: center;">
+          <h2 style="color: whitesmoke">{{step_2.least}}</h2>
+        </div>
+        <div fxFlex style="background: #9BB5E6;text-align: center;">
+          <h2>{{step_2.average}}</h2>
+        </div>
+        <div fxFlex style="background: #B099B7;text-align: center;">
+          <h2 style="color: whitesmoke">{{step_2.high}}</h2>
+        </div>
+        <div fxFlex style="background: #C4E7F5;text-align: center;">
+          <h2>{{step_2.greatest}}</h2>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>
 
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px"
-       style="padding: 30px 0;"
        *ngIf="step_2 != null" fxFlex>
-    <mat-expansion-panel fxFlex *ngIf="row_wise_age != null">
+    <mat-expansion-panel fxFlex *ngFor="let row_wise of row_wise_stats.column | keyvalue">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          Stats for age
+          Stats for {{row_wise.key}}
         </mat-panel-title>
         <mat-panel-description>
           Avg, max, &etc.
@@ -141,30 +150,17 @@
 
       <dl *ngFor="let column of row_wise_columns">
         <dt>{{column}}</dt>
-        <dd>{{row_wise_age[column]}}</dd>
-      </dl>
-    </mat-expansion-panel>
-
-    <mat-expansion-panel fxFlex *ngIf="row_wise_client_risk != null">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Stats for client risk
-        </mat-panel-title>
-        <mat-panel-description>
-          Avg, max, &etc.
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-
-      <dl *ngFor="let column of row_wise_columns">
-        <dt>{{column}}</dt>
-        <dd>{{row_wise_client_risk[column]}}</dd>
+        <dd *ngIf="column !== 'ttest' else elseBlock">{{row_wise.value[column]}}</dd>
+        <ng-template #elseBlock>
+          <dd>{{row_wise.value[column] | json}}</dd>
+        </ng-template>
       </dl>
     </mat-expansion-panel>
   </div>
 </div>
 
-<div class="mat-elevation-z8" *ngIf="risk_res_table != null">
-  <mat-tab-group selectedIndex="1">
+<div fxLayout="row" class="mat-elevation-z8 hw-100" style="margin-top: 30px" *ngIf="risk_res_table != null">
+  <mat-tab-group selectedIndex="1" class="hw-100">
     <mat-tab label="Step 1 & [maybe] step 3">
       <app-survey-data [dataSource]="survey_table"></app-survey-data>
     </mat-tab>

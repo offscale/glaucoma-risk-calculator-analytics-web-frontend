@@ -34,8 +34,6 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
   ethnicity_agg: ISingleSeries[];
   view: [number, number] = [250, 250];
   step_2: IAnalyticsResponse['step_2'];
-  row_wise_age: IRowWise;
-  row_wise_client_risk: IRowWise;
   row_wise_columns: string[];
   step_2_multi_series: IMultiSeries;
 
@@ -52,6 +50,7 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
   activeMediaQuery = '';
   group: FormGroup;
   pyAnalyticsData: IPyAnalyticsResponse;
+  row_wise_stats: IAnalyticsResponse['row_wise_stats'];
 
   constructor(mediaObserver: MediaObserver,
               private router: Router,
@@ -112,8 +111,7 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
 
             this.ethnicity_agg = node0.ethnicity_agg;
             this.step_2 = node0.step_2;
-            this.row_wise_age = node0.row_wise_stats.column.age;
-            this.row_wise_client_risk = node0.row_wise_stats.column.client_risk;
+            this.row_wise_stats = node0.row_wise_stats;
             this.row_wise_columns = Object.keys(node0.row_wise_stats.column.age);
             this.graphInit();
             /*
