@@ -37,8 +37,8 @@ export class SignupComponent implements OnInit {
             return;
           }
 
-          this.authService.access_token = res.headers.get('x-access-token');
-          localStorage.setItem('access-token', this.authService.access_token);
+          this.authService.accessToken = res.headers.get('x-access-token');
+          localStorage.setItem('access-token', this.authService.accessToken);
 
           this.router
             .navigate(['/'])

@@ -17,7 +17,7 @@ export class UserCrudDialogComponent implements OnInit {
     password: new FormControl('', Validators.minLength(3)),
     roles: new FormControl('', Validators.required)
   });
-  default_roles = UserCrudDialogComponent.roles.slice(0, 2);
+  defaultRoles = UserCrudDialogComponent.roles.slice(0, 2);
   destroy = false;
 
   constructor(public dialogRef: MatDialogRef<UserCrudDialogComponent>,
@@ -25,11 +25,11 @@ export class UserCrudDialogComponent implements OnInit {
 
   ngOnInit() {
     if (this.data === null)
-      this.form.patchValue({ roles: this.default_roles });
+      this.form.patchValue({ roles: this.defaultRoles });
     else {
       this.form.patchValue(this.data);
-      this.form.controls['password'].clearValidators();
-      this.form.controls['password'].disable();
+      this.form.controls.password.clearValidators();
+      this.form.controls.password.disable();
     }
   }
 

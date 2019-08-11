@@ -9,6 +9,7 @@ import { ISurvey } from '../../api/analytics/analytics-types';
   styleUrls: ['./survey-data.component.css']
 })
 export class SurveyDataComponent {
+  // tslint:disable-next-line:no-input-rename
   @Input('dataSource') dataSource: MatTableDataSource<ISurvey>;
 
   displayedColumns: string[] = [

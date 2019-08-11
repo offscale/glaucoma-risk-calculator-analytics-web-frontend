@@ -1,11 +1,11 @@
 <button routerLink="/" mat-button>⇦ back</button>
 
-<app-date-range [startDatetime]="selectedMoments[0].toDate()" [endDatetime]="selectedMoments[1].toDate()">
+<app-date-range [startDatetimeInput]="selectedMoments[0].toDate()" [endDatetimeInput]="selectedMoments[1].toDate()">
 </app-date-range>
 
 <div *ngIf="!pyAnalyticsData">
   <pre>
-    {{not_found_date_range ? "Try a different date-range." : "Python API endpoint not working, see console."}}
+    {{notFoundDateRange ? "Try a different date-range." : "Python API endpoint not working, see console."}}
   </pre>
 </div>
 
@@ -76,11 +76,11 @@
 
 <div fxLayout="column">
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px"
-       *ngIf="risk_res_table != null && risk_res_table.data.length" fxFlex>
+       *ngIf="riskResTable != null && riskResTable.data.length" fxFlex>
     <mat-card fxFlex>
       <mat-card-title>Calculations</mat-card-title>
       <mat-card-content>
-        <h1>{{step_2.count}}</h1>
+        <h1>{{step2.count}}</h1>
         <h3>From: {{selectedMoments[0]}}</h3>
         <h3>Until: {{selectedMoments[1]}}</h3>
       </mat-card-content>
@@ -89,7 +89,7 @@
     <mat-card fxFlex>
       <mat-card-title>Ethnic distribution</mat-card-title>
       <mat-card-content class="hw-100">
-        <ngx-charts-pie-chart fxFlex [labels]="true" [results]="ethnicity_agg"
+        <ngx-charts-pie-chart fxFlex [labels]="true" [results]="ethnicityAgg"
                               style="text-align: left">
         </ngx-charts-pie-chart>
       </mat-card-content>
@@ -98,7 +98,7 @@
     <mat-card fxFlex>
       <mat-card-title>Age distribution</mat-card-title>
       <mat-card-content class="hw-100">
-        <ngx-charts-line-chart fxFlex [results]="age_distr"
+        <ngx-charts-line-chart fxFlex [results]="ageDistribution"
                                [yAxis]="true"></ngx-charts-line-chart>
       </mat-card-content>
     </mat-card>
@@ -106,13 +106,14 @@
 
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px"
        style="padding: 30px 0;"
-       *ngIf="step_2_multi_series != null" fxFlex>
+       *ngIf="step2multiSeries != null" fxFlex>
     <mat-card fxFlex="80">
       <mat-card-title>Stratified risk (area chart)</mat-card-title>
       <mat-card-content class="hw-100">
         <ngx-charts-area-chart-normalized
-          [results]="step_2_multi_series"
-          [legend]="true">
+          [results]="step2multiSeries"
+          [legend]="true"
+          [tooltipDisabled]="true">
         </ngx-charts-area-chart-normalized>
       </mat-card-content>
     </mat-card>
@@ -121,24 +122,24 @@
       <mat-card-title>Stratified risk (numbers)</mat-card-title>
       <mat-card-content fxLayout="row" fxLayout.lt-md="column">
         <div fxFlex style="background: #AF667D; text-align: center;">
-          <h2 style="color: whitesmoke">{{step_2.least}}</h2>
+          <h2 style="color: whitesmoke">{{step2.least}}</h2>
         </div>
         <div fxFlex style="background: #9BB5E6;text-align: center;">
-          <h2>{{step_2.average}}</h2>
+          <h2>{{step2.average}}</h2>
         </div>
         <div fxFlex style="background: #B099B7;text-align: center;">
-          <h2 style="color: whitesmoke">{{step_2.high}}</h2>
+          <h2 style="color: whitesmoke">{{step2.high}}</h2>
         </div>
         <div fxFlex style="background: #C4E7F5;text-align: center;">
-          <h2>{{step_2.greatest}}</h2>
+          <h2>{{step2.greatest}}</h2>
         </div>
       </mat-card-content>
     </mat-card>
   </div>
 
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px"
-       *ngIf="step_2 != null" fxFlex>
-    <mat-expansion-panel fxFlex *ngFor="let row_wise of row_wise_stats.column | keyvalue">
+       *ngIf="step2 != null" fxFlex>
+    <mat-expansion-panel fxFlex *ngFor="let row_wise of rowWiseStats.column | keyvalue">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Stats for {{row_wise.key}}
@@ -148,24 +149,26 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
 
-      <dl *ngFor="let column of row_wise_columns">
+      <dl *ngFor="let column of rowWiseColumns">
         <dt>{{column}}</dt>
-        <dd *ngIf="column !== 'ttest' else elseBlock">{{row_wise.value[column]}}</dd>
+        <dd *ngIf="column !== 'ttest' else elseBlock">
+          {{row_wise.value[column]}}
+        </dd>
         <ng-template #elseBlock>
-          <dd>{{row_wise.value[column] | json}}</dd>
+          <dd>{{prettyPrint(row_wise.value[column])}}</dd>
         </ng-template>
       </dl>
     </mat-expansion-panel>
   </div>
 </div>
 
-<div fxLayout="row" class="mat-elevation-z8 hw-100" style="margin-top: 30px" *ngIf="risk_res_table != null">
+<div fxLayout="row" class="mat-elevation-z8 hw-100" style="margin-top: 30px" *ngIf="riskResTable != null">
   <mat-tab-group selectedIndex="1" class="hw-100">
     <mat-tab label="Step 1 & [maybe] step 3">
-      <app-survey-data [dataSource]="survey_table"></app-survey-data>
+      <app-survey-data [dataSource]="surveyTable"></app-survey-data>
     </mat-tab>
     <mat-tab label="Step 2">
-      <app-risk-res-data [dataSource]="risk_res_table"></app-risk-res-data>
+      <app-risk-res-data [dataSource]="riskResTable"></app-risk-res-data>
     </mat-tab>
     <mat-tab label="Joint steps 1&ndash;3"> TODO: show this</mat-tab>
   </mat-tab-group>

@@ -1,10 +1,18 @@
-import { AfterViewInit, Component, Input } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { DateAdapter, MatSnackBar, NativeDateAdapter } from '@angular/material';
 
-import { DatetimeAdapter, MAT_DATETIME_FORMATS, MAT_NATIVE_DATETIME_FORMATS, NativeDatetimeAdapter } from 'mat-datetimepicker/core';
+import * as moment from 'moment-timezone';
+
+import {
+  DatetimeAdapter,
+  MAT_DATETIME_FORMATS,
+  MAT_NATIVE_DATETIME_FORMATS,
+  MatDatetimepicker,
+  NativeDatetimeAdapter
+} from 'mat-datetimepicker/core';
 
 
 @Component({
@@ -25,20 +33,28 @@ import { DatetimeAdapter, MAT_DATETIME_FORMATS, MAT_NATIVE_DATETIME_FORMATS, Nat
     }
   ]
 })
-export class DateRangeComponent implements AfterViewInit {
+export class DateRangeComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line:no-input-rename
-  @Input('startDatetime')
-  startDatetime: Date;
+  @Input('startDatetimeInput')
+  startDatetimeInput: Date;
 
   // tslint:disable-next-line:no-input-rename
-  @Input('endDatetime')
-  endDatetime: Date;
+  @Input('endDatetimeInput')
+  endDatetimeInput: Date;
 
   type = 'native';
 
   group: FormGroup;
-  from_min = new Date('2016-09-02T12:10:00.000Z');
-  to_min = new Date('2016-109-11T12:20:30.000Z');
+  fromMin = new Date('2016-09-02T12:10:00.000Z');
+  toMin = new Date('2016-109-11T12:20:30.000Z');
+
+  @ViewChild('startDatetimeElem', { static: false })
+  startDatetimeComponent: MatDatetimepicker<Date>;
+
+  @ViewChild('endDatetimeElem', { static: false })
+  endDatetimeComponent: MatDatetimepicker<Date>;
+
+  period = '';
 
   constructor(private fb: FormBuilder, private snackBar: MatSnackBar, private router: Router) {
     this.group = this.fb.group({
@@ -47,14 +63,22 @@ export class DateRangeComponent implements AfterViewInit {
     });
   }
 
+  ngOnInit() {
+    this.updateStore();
+  }
+
   ngAfterViewInit() {
-    this.group.patchValue({ startDatetime: this.startDatetime, endDatetime: this.endDatetime });
+    this.group.patchValue({ startDatetime: this.startDatetimeInput, endDatetime: this.endDatetimeInput });
+    this.updateStore();
+    this.startDatetimeComponent.selectedChanged.subscribe(() => this.updateStore());
+    this.endDatetimeComponent.selectedChanged.subscribe(() => this.updateStore());
   }
 
   submit() {
     const [startDatetime, endDatetime] = Object.keys(this.group.value).map(k => this.group.value[k].toISOString());
+    this.updateStore();
     if (startDatetime >= endDatetime) {
-      this.snackBar.open('`startDatetime` is greater or equal to `endDatetime`');
+      this.snackBar.open('`startDatetimeInput` is greater or equal to `endDatetimeInput`');
       return;
     }
     this.router
@@ -62,5 +86,10 @@ export class DateRangeComponent implements AfterViewInit {
         ['/analytics'],
         { queryParams: { startDatetime, endDatetime } })
       .catch(console.error);
+  }
+
+  updateStore() {
+    Object.keys(this.group.value).forEach(k => this[k] = this.group.value[k]);
+    this.period = moment(this.startDatetimeInput).from(this.endDatetimeInput).replace('ago', 'worth');
   }
 }

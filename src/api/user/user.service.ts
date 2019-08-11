@@ -19,21 +19,21 @@ export class UserService {
       .pipe(map(parseDates));
   }
 
-  read(user_id?: string): Observable<IUser> {
+  read(userId?: string): Observable<IUser> {
     return this.http
-      .get<IUser>(`/api/user${user_id == null ? '' : '/' + user_id}`)
+      .get<IUser>(`/api/user${userId == null ? '' : '/' + userId}`)
       .pipe(map(parseDates));
   }
 
-  update(user: IUser, user_id?: string): Observable<IUser> {
+  update(user: IUser, userId?: string): Observable<IUser> {
     return this.http
-      .put<IUser>(`/api/user${user_id == null ? '' : '/' + user_id}`, user)
+      .put<IUser>(`/api/user${userId == null ? '' : '/' + userId}`, user)
       .pipe(map(parseDates));
   }
 
-  destroy(user_id: string): Observable<{}> {
+  destroy(userId: string): Observable<{}> {
     return this.http
-      .delete(`/api/user/${user_id}`);
+      .delete(`/api/user/${userId}`);
   }
 
   getAll(): Observable<IUser[]> {

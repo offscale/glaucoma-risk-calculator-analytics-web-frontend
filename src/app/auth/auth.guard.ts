@@ -31,12 +31,12 @@ export class AuthGuard implements CanActivate {
 
     qp.set('redirectUrl', url);
 
-    const qp_a: Params = {};
-    qp.forEach((k, v) => qp_a[v] = k);
+    const queryParams: Params = {};
+    qp.forEach((k, v) => queryParams[v] = k);
 
     this.router
       .navigate(['/auth'],
-        { queryParams: qp_a })
+        { queryParams })
       .catch(console.error);
     return false;
   }

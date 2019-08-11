@@ -1,3 +1,4 @@
+// tslint:disable-next-line:no-reference
 /// <reference path='../../../typings/modules/glaucoma-risk-quiz-engine/index.d.ts' />
 
 import { IInput, IMultiplicativeRisks } from 'glaucoma-risk-quiz-engine';

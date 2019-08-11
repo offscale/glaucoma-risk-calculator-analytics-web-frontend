@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -21,7 +22,7 @@ import { AuthInterceptor } from './auth/auth.interceptors';
 import { AppComponent } from './app.component';
 import { SidenavModule } from './sidenav/sidenav.module';
 import { AlertsModule } from './alerts/alerts.module';
-import { AppRoutingModule } from './app-routing.module';
+import { appRoutes } from './app.routes';
 
 
 @NgModule({
@@ -33,6 +34,8 @@ import { AppRoutingModule } from './app-routing.module';
     HttpClientModule,
     LayoutModule,
     BrowserAnimationsModule,
+    RouterModule,
+    RouterModule.forRoot(appRoutes),
 
     MatToolbarModule,
     MatButtonModule,
@@ -43,7 +46,6 @@ import { AppRoutingModule } from './app-routing.module';
     MatCardModule,
     MatMenuModule,
 
-    AppRoutingModule,
     AlertsModule.forRoot(),
     SidenavModule
   ],

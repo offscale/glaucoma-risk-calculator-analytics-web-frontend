@@ -5,7 +5,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { IAuthReq, ILoginResp } from '../../../api/auth/auth.interfaces';
 import { AuthService } from '../../../api/auth/auth.service';
 import { AlertsService } from '../../alerts/alerts.service';
-import { getRedirectUrl } from '../../app-routing.module';
+import { getRedirectUrl } from '../../utils';
 
 
 
@@ -39,7 +39,7 @@ export class SigninupComponent implements OnInit, AfterViewInit {
 
   signInUp() {
     this.authService
-      .signinup(this.form.value as IAuthReq)
+      .signInUp(this.form.value as IAuthReq)
       .subscribe((user: IAuthReq | ILoginResp) => {
           if (user.hasOwnProperty('access_token')) {
             this.authService._login(user as ILoginResp);

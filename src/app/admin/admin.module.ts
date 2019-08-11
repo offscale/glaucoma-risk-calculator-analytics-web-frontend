@@ -24,8 +24,10 @@ import { adminRoutes } from './admin.routes';
 
 @NgModule({
   imports: [
-    CommonModule, CdkTableModule, MatTableModule, FormsModule,
-    ReactiveFormsModule, RouterModule, RouterModule.forChild(adminRoutes),
+    CommonModule, FormsModule, ReactiveFormsModule, RouterModule, RouterModule.forChild(adminRoutes),
+
+    CdkTableModule,
+
     MatButtonModule, MatDialogModule, MatFormFieldModule, MatIconModule,
     MatInputModule, MatSelectModule, MatTableModule, MatToolbarModule
   ],

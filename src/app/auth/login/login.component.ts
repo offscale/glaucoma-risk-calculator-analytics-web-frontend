@@ -39,8 +39,8 @@ export class LoginComponent implements OnInit {
             return;
           }
 
-          this.authService.access_token = user.access_token;
-          localStorage.setItem('access-token', this.authService.access_token);
+          this.authService.accessToken = user.access_token;
+          localStorage.setItem('access-token', this.authService.accessToken);
 
           this.router
             .navigate(['/'])

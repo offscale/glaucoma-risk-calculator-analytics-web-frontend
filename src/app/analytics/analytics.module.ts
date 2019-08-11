@@ -33,7 +33,11 @@ import { analyticsRoutes } from './analytics.routes';
 
 
 @NgModule({
-  declarations: [AnalyticsComponent, RiskResDataComponent, SurveyDataComponent],
+  declarations: [
+    RiskResDataComponent,
+    SurveyDataComponent,
+    AnalyticsComponent
+  ],
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, RouterModule, RouterModule.forChild(analyticsRoutes),
 
@@ -48,11 +52,8 @@ import { analyticsRoutes } from './analytics.routes';
 
     DateRangeModule
   ],
-  // entryComponents: [AnalyticsComponent],
-  bootstrap: [AnalyticsComponent],
-  // exports: [AnalyticsComponent],
   providers: [
-    RiskResService, AnalyticsService, PyAnalyticsService
+    RiskResService, AnalyticsService, PyAnalyticsService,
   ]
 })
 export class AnalyticsModule {}

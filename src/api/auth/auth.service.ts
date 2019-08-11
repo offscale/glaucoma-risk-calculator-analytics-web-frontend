@@ -12,14 +12,14 @@ import { IAuthReq, ILoginResp } from './auth.interfaces';
 
 @Injectable()
 export class AuthService {
-  public access_token: string;
+  public accessToken: string;
   public loggedIn = AuthService.loggedIn;
 
   constructor(private http: HttpClient,
               private router: Router,
               private alertsService: AlertsService) {
     const at = localStorage.getItem('access-token');
-    if (at != null) this.access_token = at;
+    if (at != null) this.accessToken = at;
   }
 
   static getAccessToken(): string {
@@ -42,9 +42,9 @@ export class AuthService {
       .navigate(['/'], this.router.url === '/auth/logout' ? {} : { queryParams: { redirectUrl: this.router.url } });
   }
 
-  _login(login_resp: ILoginResp) {
-    this.access_token = login_resp.access_token;
-    localStorage.setItem('access-token', this.access_token);
+  _login(loginResp: ILoginResp) {
+    this.accessToken = loginResp.access_token;
+    localStorage.setItem('access-token', this.accessToken);
   }
 
   public login(user: IAuthReq): Observable<ILoginResp> | /*ObservableInput<{}> |*/ void {
@@ -58,7 +58,7 @@ export class AuthService {
     return this.http.post<IAuthReq>('/api/user', user, { observe: 'response' });
   }
 
-  public signinup(user: IAuthReq): Observable<IAuthReq | ILoginResp> {
+  public signInUp(user: IAuthReq): Observable<IAuthReq | ILoginResp> {
 
 
     return (this.login(user) as Observable<ILoginResp>)

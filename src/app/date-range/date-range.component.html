@@ -1,21 +1,26 @@
 <form [formGroup]="group" (ngSubmit)="submit()">
   <mat-form-field>
     <mat-placeholder>From</mat-placeholder>
-    <input matInput formControlName="startDatetime" [min]="from_min" [matDatetimepicker]="startDatetime" required>
-    <mat-datetimepicker-toggle [for]="startDatetime" matSuffix></mat-datetimepicker-toggle>
-    <mat-datetimepicker #startDatetime type="datetime" openOnFocus="true"
-                        mode="portrait" timeInterval="5" touchUi="true">
+    <input matInput formControlName="startDatetime" [min]="fromMin" [matDatetimepicker]="startDatetimeElem" required>
+    <mat-datetimepicker-toggle [for]="startDatetimeElem" matSuffix></mat-datetimepicker-toggle>
+    <mat-datetimepicker #startDatetimeElem type="datetime" openOnFocus="true"
+                        mode="portrait" timeInterval="5" touchUi="true"
+                        (selectedChanged)="updateStore()" (closed)="updateStore()" (click)="updateStore()">
     </mat-datetimepicker>
   </mat-form-field>
 
   <mat-form-field>
     <mat-placeholder>To</mat-placeholder>
-    <input matInput formControlName="endDatetime" [min]="to_min" [matDatetimepicker]="endDatetime" required>
-    <mat-datetimepicker-toggle [for]="endDatetime" matSuffix></mat-datetimepicker-toggle>
-    <mat-datetimepicker #endDatetime type="datetime" openOnFocus="true"
-                        mode="portrait" timeInterval="5" touchUi="true">
+    <input matInput formControlName="endDatetime" [min]="toMin" [matDatetimepicker]="endDatetimeElem" required>
+    <mat-datetimepicker-toggle [for]="endDatetimeElem" matSuffix></mat-datetimepicker-toggle>
+    <mat-datetimepicker #endDatetimeElem type="datetime" openOnFocus="true"
+                        mode="portrait" timeInterval="5" touchUi="true"
+                        (selectedChanged)="updateStore()" (closed)="updateStore()" (click)="updateStore()">
     </mat-datetimepicker>
   </mat-form-field>
 
-  <button type="submit" mat-raised-button color="primary">Select these [times]</button>
+  <button type="submit" mat-raised-button color="primary">
+    Choose
+  </button>
+  <em>{{period}}</em>
 </form>

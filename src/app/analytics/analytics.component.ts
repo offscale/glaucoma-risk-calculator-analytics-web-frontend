@@ -15,7 +15,7 @@ import * as moment from 'moment-timezone';
 import { Moment } from 'moment';
 
 import { IMultiSeries, ISingleSeries, TRiskResRow } from '../../api/risk_res/risk_res.services.d';
-import { IAnalyticsResponse, IRowWise, ISurvey } from '../../api/analytics/analytics-types';
+import { IAnalyticsResponse, ISurvey } from '../../api/analytics/analytics-types';
 import { AnalyticsService } from '../../api/analytics/analytics.service';
 import { PyAnalyticsService } from '../../api/py_analytics/py-analytics.service';
 import { IPyAnalyticsResponse } from '../../api/py_analytics/analytics.services';
@@ -24,20 +24,20 @@ import { IPyAnalyticsResponse } from '../../api/py_analytics/analytics.services'
 @Component({
   selector: 'app-analytics',
   templateUrl: './analytics.component.html',
-  styleUrls: ['./analytics.component.css']
+  styleUrls: ['./analytics.component.css'],
 })
 export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
-  risk_res_table: MatTableDataSource<TRiskResRow> = null;
-  survey_table: MatTableDataSource<ISurvey> = null;
+  riskResTable: MatTableDataSource<TRiskResRow> = null;
+  surveyTable: MatTableDataSource<ISurvey> = null;
 
-  age_distr: Array<{name: string, series: ISingleSeries[]}>;
-  ethnicity_agg: ISingleSeries[];
+  ageDistribution: Array<{name: string, series: ISingleSeries[]}>;
+  ethnicityAgg: ISingleSeries[];
   view: [number, number] = [250, 250];
-  step_2: IAnalyticsResponse['step_2'];
-  row_wise_columns: string[];
-  step_2_multi_series: IMultiSeries;
+  step2: IAnalyticsResponse['step_2'];
+  rowWiseColumns: string[];
+  step2multiSeries: IMultiSeries;
 
-  not_found_date_range = false;
+  notFoundDateRange = false;
 
   public selectedMoments: Moment[] = [
     moment('2019-03-11T08:00:00+11:00').tz('Australia/Sydney'),
@@ -50,7 +50,7 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
   activeMediaQuery = '';
   group: FormGroup;
   pyAnalyticsData: IPyAnalyticsResponse;
-  row_wise_stats: IAnalyticsResponse['row_wise_stats'];
+  rowWiseStats: IAnalyticsResponse['row_wise_stats'];
 
   constructor(mediaObserver: MediaObserver,
               private router: Router,
@@ -101,18 +101,18 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
           this.pyAnalyticsService
             .read(dt)
         ])
-          .subscribe((node__node_python) => {
-            const node0 = node__node_python[0];
-            this.risk_res_table = new MatTableDataSource<TRiskResRow>(node0.row_wise_stats.risk_res);
-            this.risk_res_table.paginator = this.paginator;
+          .subscribe((nodeNodePython) => {
+            const node0 = nodeNodePython[0];
+            this.riskResTable = new MatTableDataSource<TRiskResRow>(node0.row_wise_stats.risk_res);
+            this.riskResTable.paginator = this.paginator;
 
-            this.survey_table = new MatTableDataSource<ISurvey>(node0.survey_tbl);
-            this.risk_res_table.paginator = this.paginator;
+            this.surveyTable = new MatTableDataSource<ISurvey>(node0.survey_tbl);
+            this.riskResTable.paginator = this.paginator;
 
-            this.ethnicity_agg = node0.ethnicity_agg;
-            this.step_2 = node0.step_2;
-            this.row_wise_stats = node0.row_wise_stats;
-            this.row_wise_columns = Object.keys(node0.row_wise_stats.column.age);
+            this.ethnicityAgg = node0.ethnicity_agg;
+            this.step2 = node0.step_2;
+            this.rowWiseStats = node0.row_wise_stats;
+            this.rowWiseColumns = Object.keys(node0.row_wise_stats.column.age);
             this.graphInit();
             /*
             if (this.date_range_component != null)
@@ -120,10 +120,10 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
                 .subscribe(n => this.toDateRange());
              */
 
-            const node1 = node__node_python[1];
-            this.step_2_multi_series = node1.step_2_multi_series;
+            const node1 = nodeNodePython[1];
+            this.step2multiSeries = node1.step_2_multi_series;
 
-            const python = node__node_python[2];
+            const python = nodeNodePython[2];
             console.info(python._out[0]);
             console.info(python._out[1]);
 
@@ -133,7 +133,7 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
             })();
           }, (err: HttpErrorResponse) => {
             if (err.status === 404) {
-              this.not_found_date_range = true;
+              this.notFoundDateRange = true;
               this.snackBar
                 .open('No data found', 'Choose different date range')
                 .afterDismissed()
@@ -148,24 +148,24 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   private graphInit() {
-    const age_to_riskids = new Map<number, number[]>();
+    const age2riskIds = new Map<number, number[]>();
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].forEach(
-      k => age_to_riskids.set(k, [])
+      k => age2riskIds.set(k, [])
     );
-    const riskid_to_risk = new Map<number, TRiskResRow>();
-    this.risk_res_table.data.forEach(risk_res => {
-      riskid_to_risk.set(risk_res.id, risk_res);
-      const k = Math.floor(risk_res.age / 10);
-      age_to_riskids.set(k, age_to_riskids.get(k).concat(risk_res.id));
+    const riskId2risk = new Map<number, TRiskResRow>();
+    this.riskResTable.data.forEach(riskRes => {
+      riskId2risk.set(riskRes.id, riskRes);
+      const k = Math.floor(riskRes.age / 10);
+      age2riskIds.set(k, age2riskIds.get(k).concat(riskRes.id));
     });
-    this.age_distr = Array
-      .from(age_to_riskids.values())
-      .map((risk_ids, idx) => ({
+    this.ageDistribution = Array
+      .from(age2riskIds.values())
+      .map((riskIds, idx) => ({
         name: (sr => `${sr}-${sr + 9}`)(idx * 10),
-        series: risk_ids.map(k => (risk_res => ({
-          name: risk_res.id.toString(),
-          value: risk_res.age
-        }))(riskid_to_risk.get(k)))
+        series: riskIds.map(k => (riskRes => ({
+          name: riskRes.id.toString(),
+          value: riskRes.age
+        }))(riskId2risk.get(k)))
       }))
       .filter(o => o.series.length);
   }
@@ -180,6 +180,12 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
         },
         queryParamsHandling: 'merge',
         replaceUrl: true
-      });
+      })
+      .catch(console.error);
+  }
+
+  prettyPrint(obj: {}): string {
+    return JSON.stringify(obj, null, 2).replace(' ', '&nbsp;')
+      .replace('\n', '<br/>');
   }
 }

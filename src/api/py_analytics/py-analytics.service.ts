@@ -15,6 +15,6 @@ export class PyAnalyticsService {
 
 
   read(params: HttpParams): Observable<IPyAnalyticsResponse> {
-    return this.http.get<IPyAnalyticsResponse>('/api/py/analytics', {params: params});
+    return this.http.get<IPyAnalyticsResponse>('/api/py/analytics', { params });
   }
 }
