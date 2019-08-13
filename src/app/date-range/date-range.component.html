@@ -1,5 +1,5 @@
-<form [formGroup]="group" (ngSubmit)="submit()">
-  <mat-form-field>
+<form [formGroup]="group" (ngSubmit)="submit()" fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+  <mat-form-field fxFlex>
     <mat-placeholder>From</mat-placeholder>
     <input matInput formControlName="startDatetime" [min]="fromMin" [matDatetimepicker]="startDatetimeElem" required>
     <mat-datetimepicker-toggle [for]="startDatetimeElem" matSuffix></mat-datetimepicker-toggle>
@@ -9,7 +9,7 @@
     </mat-datetimepicker>
   </mat-form-field>
 
-  <mat-form-field>
+  <mat-form-field fxFlex>
     <mat-placeholder>To</mat-placeholder>
     <input matInput formControlName="endDatetime" [min]="toMin" [matDatetimepicker]="endDatetimeElem" required>
     <mat-datetimepicker-toggle [for]="endDatetimeElem" matSuffix></mat-datetimepicker-toggle>
@@ -19,8 +19,8 @@
     </mat-datetimepicker>
   </mat-form-field>
 
-  <button type="submit" mat-raised-button color="primary">
-    Choose
+  <button fxFlex type="submit" mat-raised-button color="primary">
+    Choose time period
   </button>
-  <em>{{period}}</em>
+  <em fxFlex>{{period}}</em>
 </form>

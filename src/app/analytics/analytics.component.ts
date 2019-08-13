@@ -44,7 +44,8 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
     moment('2019-03-11T15:00:00+11:00').tz('Australia/Sydney')
   ];
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: true })
+  paginator: MatPaginator;
 
   watcher: Subscription;
   activeMediaQuery = '';
@@ -124,8 +125,7 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
             this.step2multiSeries = node1.step_2_multi_series;
 
             const python = nodeNodePython[2];
-            console.info(python._out[0]);
-            console.info(python._out[1]);
+            console.info(python._out);
 
             this.pyAnalyticsData = ((): IPyAnalyticsResponse => {
               python.completed = parseFloat(math.multiply(python.completed, 100).toPrecision(5));
@@ -182,10 +182,5 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
         replaceUrl: true
       })
       .catch(console.error);
-  }
-
-  prettyPrint(obj: {}): string {
-    return JSON.stringify(obj, null, 2).replace(' ', '&nbsp;')
-      .replace('\n', '<br/>');
   }
 }
