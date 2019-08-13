@@ -125,7 +125,10 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
             this.step2multiSeries = node1.step_2_multi_series;
 
             const python = nodeNodePython[2];
-            console.info(python._out);
+            if (Array.isArray(python._out))
+              python._out.forEach(v => console.info(v));
+            else
+              console.info(python._out);
 
             this.pyAnalyticsData = ((): IPyAnalyticsResponse => {
               python.completed = parseFloat(math.multiply(python.completed, 100).toPrecision(5));
