@@ -30,13 +30,15 @@ import { SurveyDataComponent } from '../survey-data/survey-data.component';
 import { DateRangeModule } from '../date-range/date-range.module';
 import { AnalyticsComponent } from './analytics.component';
 import { analyticsRoutes } from './analytics.routes';
+import { MagTableComponent } from '../mag-table/mag-table.component';
 
 
 @NgModule({
   declarations: [
     RiskResDataComponent,
     SurveyDataComponent,
-    AnalyticsComponent
+    AnalyticsComponent,
+    MagTableComponent
   ],
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, RouterModule, RouterModule.forChild(analyticsRoutes),
