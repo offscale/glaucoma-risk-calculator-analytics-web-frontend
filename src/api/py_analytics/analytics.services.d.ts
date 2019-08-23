@@ -13,6 +13,17 @@ export interface IPyAnalyticsResponse {
     perceived_risk_mag: IMag;
     behaviour_change: IBehaviourChange;
   };
+  counts: {
+    gender: {male: number, female: number};
+    age_mag: {
+      '000–025': number,
+      '025–050': number,
+      '050–075': number,
+      '075–100': number
+    };
+    client_risk_mag: IMag;
+    behaviour_change: IBehaviourChange;
+  };
   _out: string;
 }
 

@@ -1,0 +1,10 @@
+table {
+  width: 100%;
+}
+
+.header-row {
+  height: 10px;
+  font-weight: bold;
+  margin-top: 10px;
+  display: block;
+}

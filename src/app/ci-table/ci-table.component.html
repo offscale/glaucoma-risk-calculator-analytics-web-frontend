@@ -1,0 +1,89 @@
+<table class="mat-table">
+  <thead role="rowgroup">
+    <tr class="mat-header-row">
+      <th class="mat-header-cell">
+      </th>
+      <th class="mat-header-cell">
+        Total (%)
+      </th>
+      <th class="mat-header-cell">
+        95 % CI
+      </th>
+      <th class="mat-header-cell">
+        p-value<br/>(Pearson's chi-square)
+      </th>
+    </tr>
+  </thead>
+  <tbody role="rowgroup">
+    <tr class="mat-row">
+      <td class="mat-cell">
+        Total count
+      </td>
+      <td class="mat-cell">
+        TODO
+      </td>
+      <td class="mat-cell">
+        TODO
+      </td>
+      <td class="mat-cell">
+        TODO
+      </td>
+    </tr>
+
+    <ng-container *ngFor="let src of dataSource | keyvalue">
+      <tr class="mat-row header-row">
+        {{src.key}}
+      </tr>
+      <tr class="mat-row" *ngFor="let mag of src.value | keyvalue | noTotal">
+        <td class="mat-cell">
+          {{mag.key}}
+        </td>
+        <td class="mat-cell">
+          {{mag.value}}{{mag.key === 'Total'? '' : ' (' + percent(mag.value, src.value['Total']).toString() + ')'}}
+        </td>
+        <td class="mat-cell">
+          TODO
+        </td>
+        <td class="mat-cell">
+          TODO
+        </td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>
+
+<!--
+<table mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="gender">
+    <th mat-header-cell *matHeaderCellDef>  </th>
+    <td mat-cell *matCellDef="let element"> {{element.gender.male}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.gender.female}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="age_mag">
+    <th mat-header-cell *matHeaderCellDef>age_mag</th>
+    <td mat-cell *matCellDef="let element"> {{element['000–025']}} </td>
+    <td mat-cell *matCellDef="let element"> {{element['025–050']}} </td>
+    <td mat-cell *matCellDef="let element"> {{element['050–075']}} </td>
+    <td mat-cell *matCellDef="let element"> {{element['075–100']}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="client_risk_mag">
+    <th mat-header-cell *matHeaderCellDef> client_risk_mag </th>
+    <td mat-cell *matCellDef="let element"> {{element.client_risk_mag.lowest}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.client_risk_mag.low}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.client_risk_mag.med}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.client_risk_mag.high}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="behaviour_change">
+    <th mat-header-cell *matHeaderCellDef> behaviour_change </th>
+    <td mat-cell *matCellDef="let element"> {{element.behaviour_change.as_recommended}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.behaviour_change.less_likely}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.behaviour_change.no_change}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;">{{row}}</tr>
+</table>
+-->

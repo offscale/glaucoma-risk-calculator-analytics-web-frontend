@@ -31,6 +31,8 @@ import { DateRangeModule } from '../date-range/date-range.module';
 import { AnalyticsComponent } from './analytics.component';
 import { analyticsRoutes } from './analytics.routes';
 import { MagTableComponent } from '../mag-table/mag-table.component';
+import { CiTableComponent } from '../ci-table/ci-table.component';
+import { NoTotalPipe } from '../no-total.pipe';
 
 
 @NgModule({
@@ -38,7 +40,9 @@ import { MagTableComponent } from '../mag-table/mag-table.component';
     RiskResDataComponent,
     SurveyDataComponent,
     AnalyticsComponent,
-    MagTableComponent
+    MagTableComponent,
+    CiTableComponent,
+    NoTotalPipe
   ],
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, RouterModule, RouterModule.forChild(analyticsRoutes),

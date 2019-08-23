@@ -33,6 +33,7 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
   clientRiskMagTable: MatTableDataSource<IMag> = null;
   perceivedRiskMagTable: MatTableDataSource<IMag> = null;
   behaviourChangeTable: MatTableDataSource<IBehaviourChange> = null;
+  ciTable: MatTableDataSource<IPyAnalyticsResponse['counts']> = null;
 
   ageDistribution: Array<{name: string, series: ISingleSeries[]}>;
   ethnicityAgg: ISingleSeries[];
@@ -143,22 +144,27 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
             Object
               .keys(this.pyAnalyticsData.join_for_pred_unique_cols)
               .filter(k => k !== 'behaviour_change')
-              .forEach(k =>
+              .forEach(k => {
+                console.info(`lowerCamel2under(${k}):`, lowerCamel2under(k), ';');
                 this[lowerCamel2under(k)] = new MatTableDataSource<IMag>([
                   this.pyAnalyticsData.join_for_pred_unique_cols[k]
-                ])
-              );
+                ]);
+              });
 
             this.clientRiskMagTable = new MatTableDataSource<IMag>([
               this.pyAnalyticsData.join_for_pred_unique_cols.client_risk_mag
             ]);
+
             this.perceivedRiskMagTable = new MatTableDataSource<IMag>([
               this.pyAnalyticsData.join_for_pred_unique_cols.perceived_risk_mag
             ]);
+
             this.behaviourChangeColumns = Object.keys(this.pyAnalyticsData.join_for_pred_unique_cols.behaviour_change).sort();
             this.behaviourChangeTable = new MatTableDataSource<IBehaviourChange>([
               this.pyAnalyticsData.join_for_pred_unique_cols.behaviour_change
             ]);
+
+            this.ciTable = new MatTableDataSource<IPyAnalyticsResponse['counts']>([this.pyAnalyticsData.counts]);
           }, (err: HttpErrorResponse) => {
             if (err.status === 404) {
               this.notFoundDateRange = true;
