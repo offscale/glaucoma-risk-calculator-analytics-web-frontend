@@ -14,28 +14,60 @@ export interface IPyAnalyticsResponse {
     behaviour_change: IBehaviourChange;
   };
   counts: {
-    gender: {male: number, female: number};
-    age_mag: {
-      '000–025': number,
-      '025–050': number,
-      '050–075': number,
-      '075–100': number
-    };
+    gender: IGender;
+    age_mag: IAgeMag;
     client_risk_mag: IMag;
     behaviour_change: IBehaviourChange;
+    ethnicity: IEthnicity;
   };
   _out: string;
 }
 
-export interface IMag {
-  lowest: number;
-  low: number;
-  med: number;
-  high: number;
+export interface IAgeMag {
+  '000–025': IPercentageValue;
+  '025–050': IPercentageValue;
+  '050–075': IPercentageValue;
+  '075–100': IPercentageValue;
+  Total: number;
+}
+
+export interface IPercentageValue {
+  percentage: number;
+  value: number;
 }
 
 export interface IBehaviourChange {
-  as_recommended: number;
-  less_likely: number;
-  no_change: number;
+  as_recommended: IPercentageValue;
+  no_change: IPercentageValue;
+  less_likely: IPercentageValue;
+  Total: number;
+}
+
+export interface IMag {
+  lowest: IPercentageValue;
+  low: IPercentageValue;
+  high: IPercentageValue;
+  med: IPercentageValue;
+  Total: number;
+}
+
+export interface IEthnicity {
+  Total: number;
+  olmsted: IPercentageValue;
+  nepal: IPercentageValue;
+  aboriginal: IPercentageValue;
+  singapore: IPercentageValue;
+  bmes: IPercentageValue;
+  japanese: IPercentageValue;
+  korean: IPercentageValue;
+  ghana: IPercentageValue;
+  barbados: IPercentageValue;
+  framingham: IPercentageValue;
+  indian: IPercentageValue;
+}
+
+export interface IGender {
+  male: IPercentageValue;
+  female: IPercentageValue;
+  Total: number;
 }

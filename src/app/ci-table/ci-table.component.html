@@ -4,14 +4,19 @@
       <th class="mat-header-cell">
       </th>
       <th class="mat-header-cell">
-        Total (%)
+        Total
       </th>
+      <th class="mat-header-cell">
+        %
+      </th>
+      <!--
       <th class="mat-header-cell">
         95 % CI
       </th>
       <th class="mat-header-cell">
         p-value<br/>(Pearson's chi-square)
       </th>
+      -->
     </tr>
   </thead>
   <tbody role="rowgroup">
@@ -20,34 +25,58 @@
         Total count
       </td>
       <td class="mat-cell">
-        TODO
+        {{dataSource.gender.Total}}
       </td>
-      <td class="mat-cell">
-        TODO
-      </td>
-      <td class="mat-cell">
-        TODO
-      </td>
+      <td class="mat-cell">100</td>
+      <!--
+      <td class="mat-cell"></td>
+      <td class="mat-cell"></td>
+      -->
     </tr>
 
-    <ng-container *ngFor="let src of dataSource | keyvalue">
+    <ng-container *ngFor="let src of dataSource | keyvalue; let i = index">
+      <tr class="mat-header-row" *ngIf="i===3">
+        <th class="mat-header-cell">
+        </th>
+        <th class="mat-header-cell">
+          Total
+        </th>
+        <th class="mat-header-cell">
+          %
+        </th>
+        <!--
+        <th class="mat-header-cell">
+          95 % CI
+        </th>
+        <th class="mat-header-cell">
+          p-value<br/>(Pearson's chi-square)
+        </th>
+        -->
+      </tr>
+
       <tr class="mat-row header-row">
         {{src.key}}
       </tr>
-      <tr class="mat-row" *ngFor="let mag of src.value | keyvalue | noTotal">
-        <td class="mat-cell">
-          {{mag.key}}
-        </td>
-        <td class="mat-cell">
-          {{mag.value}}{{mag.key === 'Total'? '' : ' (' + percent(mag.value, src.value['Total']).toString() + ')'}}
-        </td>
-        <td class="mat-cell">
-          TODO
-        </td>
-        <td class="mat-cell">
-          TODO
-        </td>
-      </tr>
+
+        <tr class="mat-row" *ngFor="let mag of src.value | keyvalue | noTotal">
+          <td class="mat-cell">
+            {{mag.key}}
+          </td>
+          <td class="mat-cell">
+            {{mag.value.value}}
+          </td>
+          <td class="mat-cell">
+            {{mag.value.percentage.toPrecision(4)}}
+          </td>
+          <!--
+          <td class="mat-cell">
+            TODO
+          </td>
+          <td class="mat-cell">
+            TODO
+          </td>
+          -->
+        </tr>
     </ng-container>
   </tbody>
 </table>

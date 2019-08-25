@@ -1,6 +1,6 @@
 {
   "name": "glaucoma-risk-calculator-analytics-web-frontend",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "Analytics and administrator interface for the glaucoma-risk-calculator",
   "repository": {
     "url": "https://github.com/SamuelMarks/glaucoma-risk-calculator-analytics-web-frontend"
@@ -16,17 +16,17 @@
     "test": "ng test"
   },
   "dependencies": {
-    "@angular/animations": "~8.2.2",
+    "@angular/animations": "~8.2.3",
     "@angular/cdk": "~8.1.3",
-    "@angular/common": "~8.2.2",
-    "@angular/compiler": "~8.2.2",
-    "@angular/core": "~8.2.2",
+    "@angular/common": "~8.2.3",
+    "@angular/compiler": "~8.2.3",
+    "@angular/core": "~8.2.3",
     "@angular/flex-layout": "^8.0.0-beta.26",
-    "@angular/forms": "~8.2.2",
+    "@angular/forms": "~8.2.3",
     "@angular/material": "^8.1.3",
-    "@angular/platform-browser": "~8.2.2",
-    "@angular/platform-browser-dynamic": "~8.2.2",
-    "@angular/router": "~8.2.2",
+    "@angular/platform-browser": "~8.2.3",
+    "@angular/platform-browser-dynamic": "~8.2.3",
+    "@angular/router": "~8.2.3",
     "@swimlane/ngx-charts": "^12.0.1",
     "gauge-chart": "https://api.github.com/repos/glaucoma-australia/gauge-chart/tarball/master",
     "glaucoma-risk-calculator-engine": "https://api.github.com/repos/glaucoma-australia/glaucoma-risk-calculator-engine-dist/tarball",
@@ -39,10 +39,10 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.802.2",
-    "@angular/cli": "~8.2.2",
-    "@angular/compiler-cli": "~8.2.2",
-    "@angular/language-service": "~8.2.2",
+    "@angular-devkit/build-angular": "~0.803.0",
+    "@angular/cli": "~8.3.0",
+    "@angular/compiler-cli": "~8.2.3",
+    "@angular/language-service": "~8.2.3",
     "@types/jasmine": "~3.4.0",
     "@types/jasminewd2": "~2.0.6",
     "@types/node": "~12.7.2",
@@ -56,7 +56,7 @@
     "karma-jasmine-html-reporter": "^1.4.2",
     "protractor": "~5.4.2",
     "ts-node": "~8.3.0",
-    "tslint": "~5.18.0",
+    "tslint": "~5.19.0",
     "typescript": "~3.5.3"
   }
 }
