@@ -20,6 +20,7 @@ export interface IPyAnalyticsResponse {
     behaviour_change: IBehaviourChange;
     ethnicity: IEthnicity;
   };
+  big_xgb_gv: string;
   _out: string;
 }
 

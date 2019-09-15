@@ -33,6 +33,7 @@ import { analyticsRoutes } from './analytics.routes';
 import { MagTableComponent } from '../mag-table/mag-table.component';
 import { CiTableComponent } from '../ci-table/ci-table.component';
 import { NoTotalPipe } from '../no-total.pipe';
+import { GraphvizModule } from '../graphviz/graphviz.module';
 
 
 @NgModule({
@@ -56,7 +57,7 @@ import { NoTotalPipe } from '../no-total.pipe';
     MatPaginatorModule, MatSnackBarModule, MatTableModule,
     MatTabsModule, NgxChartsModule,
 
-    DateRangeModule
+    DateRangeModule, GraphvizModule
   ],
   providers: [
     RiskResService, AnalyticsService, PyAnalyticsService,
