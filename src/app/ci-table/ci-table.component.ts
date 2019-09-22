@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { IPyAnalyticsResponse } from '../../api/py_analytics/analytics.services';
+import { IPyAnalytics2Response } from '../../api/py_analytics2/analytics.services';
 import { all, create } from 'mathjs';
 
 const math = create(all);
@@ -28,6 +28,6 @@ export class CiTableComponent {
 
   // tslint:disable-next-line:no-input-rename
   @Input('dataSource')
-    // dataSource: MatTableDataSource<IPyAnalyticsResponse['counts']>;
-  dataSource: IPyAnalyticsResponse['counts'];
+    // dataSource: MatTableDataSource<IPyAnalytics2Response['counts']>;
+  dataSource: IPyAnalytics2Response['counts'];
 }

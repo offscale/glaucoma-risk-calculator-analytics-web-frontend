@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { FormGroup } from '@angular/forms';
@@ -17,9 +17,11 @@ import { Moment } from 'moment';
 import { IMultiSeries, ISingleSeries, TRiskResRow } from '../../api/risk_res/risk_res.services.d';
 import { IAnalyticsResponse, ISurvey } from '../../api/analytics/analytics-types';
 import { AnalyticsService } from '../../api/analytics/analytics.service';
-import { PyAnalyticsService } from '../../api/py_analytics/py-analytics.service';
-import { IBehaviourChange, IMag, IPyAnalyticsResponse } from '../../api/py_analytics/analytics.services';
+import { PyAnalytics2Service } from '../../api/py_analytics2/py-analytics2.service';
+import { IBehaviourChange, IMag, IPyAnalytics2Response } from '../../api/py_analytics2/analytics.services';
 import { lowerCamel2under } from '../utils';
+import { PyAnalytics3Service } from '../../api/py_analytics3/py-analytics3.service';
+import { IPyAnalytics3Response } from '../../api/py_analytics3/analytics.services';
 
 
 @Component({
@@ -27,13 +29,13 @@ import { lowerCamel2under } from '../utils';
   templateUrl: './analytics.component.html',
   styleUrls: ['./analytics.component.css'],
 })
-export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
+export class AnalyticsComponent implements OnInit, AfterViewInit, OnDestroy {
   riskResTable: MatTableDataSource<TRiskResRow> = null;
   surveyTable: MatTableDataSource<ISurvey> = null;
   clientRiskMagTable: MatTableDataSource<IMag> = null;
   perceivedRiskMagTable: MatTableDataSource<IMag> = null;
   behaviourChangeTable: MatTableDataSource<IBehaviourChange> = null;
-  ciTable: MatTableDataSource<IPyAnalyticsResponse['counts']> = null;
+  ciTable: MatTableDataSource<IPyAnalytics2Response['counts']> = null;
 
   ageDistribution: Array<{name: string, series: ISingleSeries[]}>;
   ethnicityAgg: ISingleSeries[];
@@ -55,16 +57,20 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
   watcher: Subscription;
   activeMediaQuery = '';
   group: FormGroup;
-  pyAnalyticsData: IPyAnalyticsResponse;
+  pyAnalytics2Data: IPyAnalytics2Response;
+  pyAnalytics3Data: IPyAnalytics3Response;
   rowWiseStats: IAnalyticsResponse['row_wise_stats'];
   behaviourChangeColumns: string[] = [];
+  doc: Document;
+  @ViewChild('feature_importance_gv', { static: false }) featureImportanceElement: ElementRef;
 
   constructor(mediaObserver: MediaObserver,
               private router: Router,
               private route: ActivatedRoute,
               private snackBar: MatSnackBar,
               private analyticsService: AnalyticsService,
-              private pyAnalyticsService: PyAnalyticsService) {
+              private pyAnalytics2Service: PyAnalytics2Service,
+              private pyAnalytics3Service: PyAnalytics3Service) {
     this.watcher = mediaObserver
       .asObservable()
       .subscribe((changes: MediaChange[]) => {
@@ -101,15 +107,13 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
           .set('endDatetime', encodeURIComponent(this.selectedMoments[1].toISOString(true)));
 
         forkJoin([
-          this.analyticsService
-            .readAll0(dt),
-          this.analyticsService
-            .readAll1(dt),
-          this.pyAnalyticsService
-            .read(dt)
+          this.analyticsService.readAll0(dt),
+          this.analyticsService.readAll1(dt),
+          this.pyAnalytics2Service.read(dt),
+          this.pyAnalytics3Service.read(dt)
         ])
-          .subscribe((nodeNodePython) => {
-            const node0 = nodeNodePython[0];
+          .subscribe((nodeNodePythonPython) => {
+            const node0 = nodeNodePythonPython[0];
             this.riskResTable = new MatTableDataSource<TRiskResRow>(node0.row_wise_stats.risk_res);
             this.riskResTable.paginator = this.paginator;
 
@@ -127,44 +131,53 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
                 .subscribe(n => this.toDateRange());
              */
 
-            const node1 = nodeNodePython[1];
+            const node1 = nodeNodePythonPython[1];
             this.step2multiSeries = node1.step_2_multi_series;
 
-            const python = nodeNodePython[2];
-            if (Array.isArray(python._out))
-              python._out.forEach(v => console.info(v));
+            const python2 = nodeNodePythonPython[2];
+            if (Array.isArray(python2._out))
+              python2._out.forEach(v => console.info(v));
             else
-              console.info(python._out);
+              console.info(python2._out);
 
-            this.pyAnalyticsData = ((): IPyAnalyticsResponse => {
-              python.completed = parseFloat(math.multiply(python.completed, 100).toPrecision(5));
-              return python;
+            this.pyAnalytics2Data = ((): IPyAnalytics2Response => {
+              python2.completed = parseFloat(math.multiply(python2.completed, 100).toPrecision(5));
+              return python2;
             })();
 
             Object
-              .keys(this.pyAnalyticsData.join_for_pred_unique_cols)
+              .keys(this.pyAnalytics2Data.join_for_pred_unique_cols)
               .filter(k => k !== 'behaviour_change')
               .forEach(k => {
                 console.info(`lowerCamel2under(${k}):`, lowerCamel2under(k), ';');
                 this[lowerCamel2under(k)] = new MatTableDataSource<IMag>([
-                  this.pyAnalyticsData.join_for_pred_unique_cols[k]
+                  this.pyAnalytics2Data.join_for_pred_unique_cols[k]
                 ]);
               });
 
             this.clientRiskMagTable = new MatTableDataSource<IMag>([
-              this.pyAnalyticsData.join_for_pred_unique_cols.client_risk_mag
+              this.pyAnalytics2Data.join_for_pred_unique_cols.client_risk_mag
             ]);
 
             this.perceivedRiskMagTable = new MatTableDataSource<IMag>([
-              this.pyAnalyticsData.join_for_pred_unique_cols.perceived_risk_mag
+              this.pyAnalytics2Data.join_for_pred_unique_cols.perceived_risk_mag
             ]);
 
-            this.behaviourChangeColumns = Object.keys(this.pyAnalyticsData.join_for_pred_unique_cols.behaviour_change).sort();
+            this.behaviourChangeColumns = Object.keys(this.pyAnalytics2Data.join_for_pred_unique_cols.behaviour_change).sort();
             this.behaviourChangeTable = new MatTableDataSource<IBehaviourChange>([
-              this.pyAnalyticsData.join_for_pred_unique_cols.behaviour_change
+              this.pyAnalytics2Data.join_for_pred_unique_cols.behaviour_change
             ]);
 
-            this.ciTable = new MatTableDataSource<IPyAnalyticsResponse['counts']>([this.pyAnalyticsData.counts]);
+            this.ciTable = new MatTableDataSource<IPyAnalytics2Response['counts']>([this.pyAnalytics2Data.counts]);
+
+            const python3 = nodeNodePythonPython[3];
+            if (Array.isArray(python3._out))
+              python3._out.forEach(v => console.info(v));
+            else
+              console.info(python3._out);
+
+            this.pyAnalytics3Data = python3;
+            // this.populate();
           }, (err: HttpErrorResponse) => {
             if (err.status === 404) {
               this.notFoundDateRange = true;
@@ -172,12 +185,20 @@ export class AnalyticsComponent implements OnInit, AfterContentInit, OnDestroy {
                 .open('No data found', 'Choose different date range')
                 .afterDismissed()
                 .subscribe(() => /*this.date_range_component.confirmSelect()*/ void 0);
-            } else console.error('AnalyticsComponent::ngOnInit::analyticsService.readAll0(_)::err', err, ';');
+            } else console.error('AnalyticsComponent::ngOnInit::forkJoin::err', err, ';');
           });
       });
   }
 
-  ngAfterContentInit() {
+  populate() {
+    this.featureImportanceElement.nativeElement.innerHTML = this.pyAnalytics3Data.feature_importance_gv;
+    document.getElementById('populate_button').remove();
+  }
+
+  ngAfterViewInit() {
+    // this.populate();
+    // document.getElementById('featureImportanceElement').appendChild(this.doc);
+    // this.doc;
     // this.date_range_component.open();
   }
 

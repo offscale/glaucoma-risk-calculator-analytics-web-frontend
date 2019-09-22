@@ -19,9 +19,10 @@ import {
 import { AuthGuard } from './auth/auth.guard';
 import { AuthInterceptor } from './auth/auth.interceptors';
 
-import { AppComponent } from './app.component';
 import { SidenavModule } from './sidenav/sidenav.module';
 import { AlertsModule } from './alerts/alerts.module';
+import { SvgViewerModule } from './svg-viewer/svg-viewer.module';
+import { AppComponent } from './app.component';
 import { appRoutes } from './app.routes';
 
 

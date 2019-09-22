@@ -16,14 +16,14 @@ export class GraphvizComponent implements OnInit, AfterViewInit, AfterContentIni
     zoom: false,
   };
 
-  private id: string;
+  public id: string;
 
   @Input('graph') graph: string;
 
   private props: IGraphvizProps;
 
   constructor() {
-    this.id = 'graphviz' + GraphvizComponent.count;
+    this.id = `graphviz${GraphvizComponent.count}`;
     this.renderGraph();
     GraphvizComponent.count++;
   }

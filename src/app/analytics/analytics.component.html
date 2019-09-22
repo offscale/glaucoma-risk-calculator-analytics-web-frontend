@@ -7,13 +7,13 @@
   </mat-card-content>
 </mat-card>
 
-<div *ngIf="!pyAnalyticsData">
+<div *ngIf="!pyAnalytics2Data">
   <pre>
     {{notFoundDateRange ? "Try a different date-range." : "Python API endpoint not working, see console."}}
   </pre>
 </div>
 
-<div fxLayout="row" style="padding: 30px 0" fxLayoutGap="20px" *ngIf="pyAnalyticsData">
+<div fxLayout="row" style="padding: 30px 0" fxLayoutGap="20px" *ngIf="pyAnalytics2Data">
   <!--  <div fxFlex="40">
 
   <form [formGroup]="group">
@@ -42,22 +42,22 @@
   <div fxFlex="100" fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
     <mat-card fxFlex>
       <mat-card-content fxFlex>
-        <p>Of the {{pyAnalyticsData.survey_count}} entries:</p>
+        <p>Of the {{pyAnalytics2Data.survey_count}} entries:</p>
         <dl>
           <dt>step 1 only</dt>
-          <dd>{{pyAnalyticsData.step1_count}}</dd>
+          <dd>{{pyAnalytics2Data.step1_count}}</dd>
 
           <dt>step 2 only</dt>
-          <dd>{{pyAnalyticsData.step2_count}}</dd>
+          <dd>{{pyAnalytics2Data.step2_count}}</dd>
 
           <dt>step 3 only</dt>
-          <dd>{{pyAnalyticsData.step3_count}}</dd>
+          <dd>{{pyAnalytics2Data.step3_count}}</dd>
 
           <dt>some_combination</dt>
-          <dd>{{pyAnalyticsData.some_combination}}</dd>
+          <dd>{{pyAnalytics2Data.some_combination}}</dd>
 
           <dt>finished all 3</dt>
-          <dd>{{pyAnalyticsData.all_steps}}</dd>
+          <dd>{{pyAnalytics2Data.all_steps}}</dd>
         </dl>
       </mat-card-content>
     </mat-card>
@@ -67,13 +67,13 @@
         <p>Some notable statistics:</p>
         <dl>
           <dt>completed the final step</dt>
-          <dd>{{pyAnalyticsData.all_steps}}, i.e.: {{pyAnalyticsData.completed.toPrecision(5)}}%</dd>
+          <dd>{{pyAnalytics2Data.all_steps}}, i.e.: {{pyAnalytics2Data.completed.toPrecision(5)}}%</dd>
 
           <dt>converted (provided their emails)</dt>
-          <dd *ngIf="pyAnalyticsData.email_conversion">
-            {{pyAnalyticsData.emails}}, i.e.: {{pyAnalyticsData.email_conversion.toPrecision(5)}}%
+          <dd *ngIf="pyAnalytics2Data.email_conversion">
+            {{pyAnalytics2Data.emails}}, i.e.: {{pyAnalytics2Data.email_conversion.toPrecision(5)}}%
           </dd>
-          <dd *ngIf="!pyAnalyticsData.email_conversion">234.000 &dagger;
+          <dd *ngIf="!pyAnalytics2Data.email_conversion">234.000 &dagger;
             <p>&dagger;in OPSM event (Monday 11/03/2019 from 8:30AM to 3:30PM AEST)</p>
           </dd>
         </dl>
@@ -82,8 +82,8 @@
   </div>
 </div>
 
-<div fxLayout="row" style="padding: 30px 0" fxLayoutGap="20px" *ngIf="pyAnalyticsData">
-  <div fxFlex="100" fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+<div fxLayout="row" style="padding: 30px 0" fxLayoutGap="20px" *ngIf="pyAnalytics2Data">
+  <div fxFlex="100" fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="2px">
     <mat-card fxFlex>
       <mat-card-content fxFlex="100" fxLayout="column" fxLayoutGap="20px">
         <div fxFlex>
@@ -124,7 +124,9 @@
           </dd>
         </div>
 
-        <app-graphviz fxFlex [graph]="pyAnalyticsData.big_xgb_gv"></app-graphviz>
+        <app-graphviz fxFlex [graph]="pyAnalytics3Data.big_xgb_gv"></app-graphviz>
+        <div fxFlex #feature_importance_gv [innerHTML]="pyAnalytics3Data.feature_importance_gv"></div>
+        <button (click)="populate()" id="populate_button">populate</button>
       </mat-card-content>
     </mat-card>
   </div>
@@ -132,7 +134,7 @@
   <div fxFlex="100" fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
     <mat-card fxFlex>
       <mat-card-content fxFlex>
-        <app-ci-table [dataSource]="pyAnalyticsData.counts"></app-ci-table>
+        <app-ci-table [dataSource]="pyAnalytics2Data.counts"></app-ci-table>
         <!--
         <app-ci-table [dataSource]="ciTable"></app-ci-table>
         -->

@@ -1,4 +1,4 @@
-export interface IPyAnalyticsResponse {
+export interface IPyAnalytics2Response {
   survey_count: number;
   step1_count: number;
   step2_count: number;
@@ -20,7 +20,6 @@ export interface IPyAnalyticsResponse {
     behaviour_change: IBehaviourChange;
     ethnicity: IEthnicity;
   };
-  big_xgb_gv: string;
   _out: string;
 }
 

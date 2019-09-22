@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 
-import { IMag } from '../../api/py_analytics/analytics.services';
+import { IMag } from '../../api/py_analytics2/analytics.services';
 
 
 @Component({
