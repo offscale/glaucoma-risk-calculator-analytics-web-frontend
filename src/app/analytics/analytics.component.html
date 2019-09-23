@@ -124,8 +124,9 @@
           </dd>
         </div>
 
-        <app-graphviz fxFlex [graph]="pyAnalytics3Data.big_xgb_gv"></app-graphviz>
-        <div fxFlex #feature_importance_gv [innerHTML]="pyAnalytics3Data.feature_importance_gv"></div>
+        <app-graphviz fxFlex [graph]="pyAnalytics3Data.big_xgb_gv" [callback]="populate.bind(this)">
+        </app-graphviz>
+        <div fxFlex id="feature_importance_gv" #feature_importance_gv [innerHTML]="pyAnalytics3Data.feature_importance_gv"></div>
         <button (click)="populate()" id="populate_button">populate</button>
       </mat-card-content>
     </mat-card>

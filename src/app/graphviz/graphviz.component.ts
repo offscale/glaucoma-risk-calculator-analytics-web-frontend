@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { graphviz, GraphvizOptions } from 'd3-graphviz';
 
@@ -11,14 +11,18 @@ export class GraphvizComponent implements OnInit, AfterViewInit, AfterContentIni
   private static count = 0;
   private static defaultOptions: GraphvizOptions = {
     fit: true,
-    height: 500,
-    width: 1000,
+    height: '100%',
+    width: '100%',
     zoom: false,
   };
 
   public id: string;
+  // private count: number = 0;
 
   @Input('graph') graph: string;
+  @Input('callback') cb: () => void;
+
+  // @Output() change: EventEmitter<number> = new EventEmitter<number>();
 
   private props: IGraphvizProps;
 
@@ -47,10 +51,17 @@ export class GraphvizComponent implements OnInit, AfterViewInit, AfterContentIni
         dot: this.graph
       };
     }
-    if (document.getElementById(this.id))
+    if (document.getElementById(this.id)) {
       graphviz(`#${this.id}`)
         .options(this.options())
         .renderDot(this.props.dot);
+      // this.change.emit(++this.count);
+      setTimeout(this.cb, 100);
+    }
+  }
+
+  countChange(event) {
+    console.info('countChange::event', event, ';');
   }
 
   private options(): GraphvizOptions {

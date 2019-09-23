@@ -1,7 +1,6 @@
-import { AfterContentInit, AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { FormGroup } from '@angular/forms';
 
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 
@@ -19,9 +18,9 @@ import { IAnalyticsResponse, ISurvey } from '../../api/analytics/analytics-types
 import { AnalyticsService } from '../../api/analytics/analytics.service';
 import { PyAnalytics2Service } from '../../api/py_analytics2/py-analytics2.service';
 import { IBehaviourChange, IMag, IPyAnalytics2Response } from '../../api/py_analytics2/analytics.services';
-import { lowerCamel2under } from '../utils';
 import { PyAnalytics3Service } from '../../api/py_analytics3/py-analytics3.service';
 import { IPyAnalytics3Response } from '../../api/py_analytics3/analytics.services';
+import { lowerCamel2under } from '../utils';
 
 
 @Component({
@@ -56,12 +55,12 @@ export class AnalyticsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   watcher: Subscription;
   activeMediaQuery = '';
-  group: FormGroup;
+
   pyAnalytics2Data: IPyAnalytics2Response;
   pyAnalytics3Data: IPyAnalytics3Response;
   rowWiseStats: IAnalyticsResponse['row_wise_stats'];
   behaviourChangeColumns: string[] = [];
-  doc: Document;
+
   @ViewChild('feature_importance_gv', { static: false }) featureImportanceElement: ElementRef;
 
   constructor(mediaObserver: MediaObserver,
@@ -196,7 +195,9 @@ export class AnalyticsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    // this.populate();
+    /*if (document.getElementById('feature_importance_gv') &&
+      document.getElementById('populate_button'))
+      this.populate();*/
     // document.getElementById('featureImportanceElement').appendChild(this.doc);
     // this.doc;
     // this.date_range_component.open();
