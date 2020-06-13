@@ -23,21 +23,21 @@ export class SigninupComponent implements OnInit, AfterViewInit {
               public authService: AuthService,
               private alertsService: AlertsService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     if (AuthService.loggedIn())
       this.router
         .navigate([getRedirectUrl(location.href) || '/'])
         .then(() => {});
   }
 
-  signInUp() {
+  signInUp(): void {
     this.authService
       .signInUp(this.form.value as IAuthReq)
       .subscribe((user: IAuthReq | ILoginResp) => {

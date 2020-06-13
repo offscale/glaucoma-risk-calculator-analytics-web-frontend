@@ -4,7 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { FlexModule } from '@angular/flex-layout';
 
-import { MAT_DATE_LOCALE, MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 import { MatDatetimepickerModule, MatNativeDatetimeModule } from 'mat-datetimepicker/core';
 

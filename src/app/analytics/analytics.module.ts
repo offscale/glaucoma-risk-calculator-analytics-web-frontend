@@ -2,23 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { CdkTableModule } from '@angular/cdk/table';
 
-import {
-  MatButtonModule,
-  MatCardModule,
-  MatDatepickerModule,
-  MatExpansionModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatPaginatorModule,
-  MatSnackBarModule,
-  MatTableModule,
-  MatTabsModule
-} from '@angular/material';
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
@@ -36,8 +25,18 @@ import { GraphvizModule } from '../graphviz/graphviz.module';
 import { SvgViewerModule } from '../svg-viewer/svg-viewer.module';
 import { AnalyticsComponent } from './analytics.component';
 import { analyticsRoutes } from './analytics.routes';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+
 import { AuthInterceptor } from '../auth/auth.interceptors';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @NgModule({

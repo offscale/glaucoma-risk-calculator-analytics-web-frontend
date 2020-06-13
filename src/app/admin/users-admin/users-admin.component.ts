@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatTableDataSource } from '@angular/material';
+
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 
 import { IUser } from '../../../api/user/user.interfaces';
 import { UserService } from '../../../api/user/user.service';
 import { UserCrudDialogComponent } from '../user-crud-dialog/user-crud.dialog.component';
+
 
 @Component({
   selector: 'app-users-admin',
@@ -17,17 +20,17 @@ export class UsersAdminComponent implements OnInit {
   constructor(public dialog: MatDialog,
               private userService: UserService) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userService
       .getAll()
       .subscribe(users => this.usersDataSource = new MatTableDataSource(users.sort()));
   }
 
-  applyFilter(filterValue: string) {
+  applyFilter(filterValue: string): void {
     this.usersDataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  openUserCrud(row?: IUser) {
+  openUserCrud(row?: IUser): void {
     this
       .dialog
       .open(UserCrudDialogComponent, { data: row })
@@ -68,7 +71,7 @@ export class UsersAdminComponent implements OnInit {
       });
   }
 
-  selected(row: IUser) {
+  selected(row: IUser): void {
     this.openUserCrud(row);
   }
 }

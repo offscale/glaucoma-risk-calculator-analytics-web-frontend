@@ -1,9 +1,10 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MatSnackBarModule } from '@angular/material';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AlertsService } from './alerts.service';
+
 
 
 @NgModule({
@@ -13,7 +14,7 @@ import { AlertsService } from './alerts.service';
   declarations: []
 })
 export class AlertsModule {
-  public static forRoot(): ModuleWithProviders {
+  public static forRoot(): ModuleWithProviders<AlertsModule> {
     return { ngModule: AlertsModule, providers: [AlertsService] };
   }
 }

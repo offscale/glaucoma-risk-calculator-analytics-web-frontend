@@ -32,20 +32,20 @@ export class GraphvizComponent implements OnInit, AfterViewInit, AfterContentIni
     GraphvizComponent.count++;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.props = { dot: this.graph };
     this.renderGraph();
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.renderGraph();
   }
 
-  ngAfterContentInit() {
+  ngAfterContentInit(): void {
     this.renderGraph();
   }
 
-  private renderGraph() {
+  private renderGraph(): void {
     if (!this.props || !this.props.dot) {
       this.props = {
         dot: this.graph
@@ -60,7 +60,7 @@ export class GraphvizComponent implements OnInit, AfterViewInit, AfterContentIni
     }
   }
 
-  countChange(event) {
+  countChange(event): void {
     console.info('countChange::event', event, ';');
   }
 

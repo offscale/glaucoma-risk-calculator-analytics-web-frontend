@@ -13,11 +13,11 @@ export class SvgViewerComponent implements OnInit {
 
   constructor(private elementRef: ElementRef, private http: HttpClient) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.fetchAndInlineSvgContent(this.src);
   }
 
-  private inlineSvgContent(template) {
+  private inlineSvgContent(template): void {
     this.elementRef.nativeElement.innerHTML = template;
 
     if (this.scaleToContainer) {

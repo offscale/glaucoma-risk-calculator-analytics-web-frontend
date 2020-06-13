@@ -4,7 +4,7 @@ import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 
-import { MatPaginator, MatSnackBar, MatTableDataSource } from '@angular/material';
+
 
 import { forkJoin, Subscription } from 'rxjs';
 
@@ -21,6 +21,9 @@ import { IBehaviourChange, IMag, IPyAnalytics2Response } from '../../api/py_anal
 import { PyAnalytics3Service } from '../../api/py_analytics3/py-analytics3.service';
 import { IPyAnalytics3Response } from '../../api/py_analytics3/analytics.services';
 import { lowerCamel2under } from '../utils';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -88,11 +91,11 @@ export class AnalyticsComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.watcher.unsubscribe();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.route
       .queryParamMap
       .subscribe(params => {
@@ -189,12 +192,12 @@ export class AnalyticsComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  populate() {
+  populate(): void {
     this.featureImportanceElement.nativeElement.innerHTML = this.pyAnalytics3Data.feature_importance_gv;
     document.getElementById('populate_button').remove();
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     /*if (document.getElementById('feature_importance_gv') &&
       document.getElementById('populate_button'))
       this.populate();*/
@@ -203,7 +206,7 @@ export class AnalyticsComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.date_range_component.open();
   }
 
-  private graphInit() {
+  private graphInit(): void {
     const age2riskIds = new Map<number, number[]>();
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].forEach(
       k => age2riskIds.set(k, [])
@@ -226,7 +229,7 @@ export class AnalyticsComponent implements OnInit, AfterViewInit, OnDestroy {
       .filter(o => o.series.length);
   }
 
-  toDateRange() {
+  toDateRange(): void {
     this.router.navigate([],
       {
         relativeTo: this.route,

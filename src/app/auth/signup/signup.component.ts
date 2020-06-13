@@ -21,14 +21,14 @@ export class SignupComponent implements OnInit {
               public authService: AuthService,
               private alertsService: AlertsService) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
   }
 
-  signup() {
+  signup(): void {
     this.authService
       .register(this.form.value as IAuthReq)
       .subscribe((res: HttpResponse<IAuthReq>) => {

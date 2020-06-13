@@ -2,8 +2,6 @@ import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/cor
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { DateAdapter, MatSnackBar, NativeDateAdapter } from '@angular/material';
-
 import * as moment from 'moment-timezone';
 
 import {
@@ -13,6 +11,8 @@ import {
   MatDatetimepicker,
   NativeDatetimeAdapter
 } from 'mat-datetimepicker/core';
+import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -63,18 +63,18 @@ export class DateRangeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.updateStore();
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.group.patchValue({ startDatetime: this.startDatetimeInput, endDatetime: this.endDatetimeInput });
     this.updateStore();
     this.startDatetimeComponent.selectedChanged.subscribe(() => this.updateStore());
     this.endDatetimeComponent.selectedChanged.subscribe(() => this.updateStore());
   }
 
-  submit() {
+  submit(): void {
     const [startDatetime, endDatetime] = Object.keys(this.group.value).map(k => this.group.value[k].toISOString());
     this.updateStore();
     if (startDatetime >= endDatetime) {
@@ -88,7 +88,7 @@ export class DateRangeComponent implements OnInit, AfterViewInit {
       .catch(console.error);
   }
 
-  updateStore() {
+  updateStore(): void {
     Object.keys(this.group.value).forEach(k => this[k] = this.group.value[k]);
     this.period = moment(this.startDatetimeInput).from(this.endDatetimeInput).replace('ago', 'worth');
   }

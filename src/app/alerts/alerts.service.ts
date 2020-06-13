@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import { HttpErrorResponse } from '@angular/common/http';
 
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+
 import { TAlert } from './alerts.types';
+
 
 @Injectable()
 export class AlertsService {

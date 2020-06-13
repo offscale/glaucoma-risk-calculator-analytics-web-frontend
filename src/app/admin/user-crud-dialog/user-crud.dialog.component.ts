@@ -1,8 +1,10 @@
 import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { IUser } from '../../../api/user/user.interfaces';
+
 
 @Component({
   selector: 'app-admin.user-crud',
@@ -23,7 +25,7 @@ export class UserCrudDialogComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<UserCrudDialogComponent>,
               @Optional() @Inject(MAT_DIALOG_DATA) public data: IUser) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (this.data === null)
       this.form.patchValue({ roles: this.defaultRoles });
     else {
@@ -33,7 +35,7 @@ export class UserCrudDialogComponent implements OnInit {
     }
   }
 
-  closeDialog() {
+  closeDialog(): void {
     this.dialogRef.close(this.destroy ? this.destroy : this.form.value);
   }
 }

@@ -2,12 +2,14 @@ import { AfterContentInit, Component, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { MatSidenav } from '@angular/material';
+
+import { MatSidenav } from '@angular/material/sidenav';
 
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { AuthService } from '../../api/auth/auth.service';
+
 
 @Component({
   selector: 'app-sidenav',
@@ -30,14 +32,14 @@ export class SidenavComponent implements AfterContentInit {
     this.hasRole = AuthService.hasRole;
   }
 
-  ngAfterContentInit() {
+  ngAfterContentInit(): void {
     this.openedSubject.subscribe(
       open => this.sidenav[open ? 'open' : 'close']()
     );
     this.router.events.subscribe(() => this.openedSubject.next(false));
   }
 
-  toggle() {
+  toggle(): void {
     this.openedSubject.next(!this.sidenav.opened);
   }
 }

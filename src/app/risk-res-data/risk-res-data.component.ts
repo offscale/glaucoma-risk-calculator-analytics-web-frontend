@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { MatTableDataSource } from '@angular/material';
+
+import { MatTableDataSource } from '@angular/material/table';
 
 import { TRiskResRow } from '../../api/risk_res/risk_res.services';
 

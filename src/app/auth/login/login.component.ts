@@ -23,14 +23,14 @@ export class LoginComponent implements OnInit {
               public authService: AuthService,
               private alertsService: AlertsService) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
   }
 
-  login() {
+  login(): void {
     (this.authService
       .login(this.form.value as IAuthReq) as Observable<ILoginResp>)
       .subscribe((user: ILoginResp) => {
