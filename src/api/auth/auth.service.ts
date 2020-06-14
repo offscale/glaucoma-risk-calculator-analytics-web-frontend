@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { throwError } from 'rxjs/internal/observable/throwError';
 
 import { AlertsService } from '../../app/alerts/alerts.service';
 import { IAuthReq, ILoginResp } from './auth.interfaces';
@@ -35,14 +34,14 @@ export class AuthService {
     return at.indexOf(role) > -1;
   }
 
-  logout() {
+  logout(): void {
     localStorage.removeItem('access-token');
     localStorage.removeItem('user');
     this.router
       .navigate(['/'], this.router.url === '/auth/logout' ? {} : { queryParams: { redirectUrl: this.router.url } });
   }
 
-  _login(loginResp: ILoginResp) {
+  _login(loginResp: ILoginResp): void {
     this.accessToken = loginResp.access_token;
     localStorage.setItem('access-token', this.accessToken);
   }

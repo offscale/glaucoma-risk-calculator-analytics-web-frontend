@@ -1,6 +1,6 @@
 {
   "name": "glaucoma-risk-calculator-analytics-web-frontend",
-  "version": "0.0.23",
+  "version": "0.0.24",
   "description": "Analytics and administrator interface for the glaucoma-risk-calculator",
   "repository": {
     "url": "https://github.com/SamuelMarks/glaucoma-risk-calculator-analytics-web-frontend"
