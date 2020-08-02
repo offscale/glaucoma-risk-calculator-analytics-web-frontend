@@ -10,7 +10,7 @@ import {
   MAT_NATIVE_DATETIME_FORMATS,
   MatDatetimepicker,
   NativeDatetimeAdapter
-} from 'mat-datetimepicker/core';
+} from '@mat-datetimepicker/core';
 import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 

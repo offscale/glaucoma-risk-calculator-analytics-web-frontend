@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 
-import { MatDatetimepickerModule, MatNativeDatetimeModule } from 'mat-datetimepicker/core';
+import { MatDatetimepickerModule, MatNativeDatetimeModule } from '@mat-datetimepicker/core';
 
 import { DateRangeComponent } from './date-range.component';
 
