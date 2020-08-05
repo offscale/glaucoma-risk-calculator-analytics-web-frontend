@@ -10,7 +10,7 @@ import { Subject } from 'rxjs';
 export class AppComponent {
   openedSubject = new Subject<boolean>();
 
-  dismissSidebar() {
+  dismissSidebar(): void {
     this.openedSubject.next(false);
   }
 }

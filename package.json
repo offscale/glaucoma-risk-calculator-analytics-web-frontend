@@ -1,6 +1,6 @@
 {
   "name": "glaucoma-risk-calculator-analytics-web-frontend",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "description": "Analytics and administrator interface for the glaucoma-risk-calculator",
   "repository": {
     "url": "https://github.com/SamuelMarks/glaucoma-risk-calculator-analytics-web-frontend"
@@ -30,8 +30,7 @@
     "@angular/router": "~10.0.7",
     "@mat-datetimepicker/core": "https://github.com/SamuelMarks/mat-datetimepicker/releases/download/ng10/core-4.1.1.tar.gz",
     "@mat-datetimepicker/moment": "https://github.com/SamuelMarks/mat-datetimepicker/releases/download/ng10/moment-4.1.1.tar.gz",
-    "@swimlane/ngx-charts": "^14.0.0",
-    "angular-svg": "^2.0.8",
+    "@swimlane/ngx-charts": "https://github.com/SamuelMarks/ngx-charts/releases/download/ng10/ngx-charts-ng10.tar.gz",
     "d3-graphviz": "^3.1.0",
     "gauge-chart": "github:offscale/gauge-chart",
     "glaucoma-risk-calculator-engine": "github:offscale/glaucoma-risk-calculator-engine-dist",

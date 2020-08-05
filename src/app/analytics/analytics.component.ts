@@ -5,7 +5,6 @@ import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 
 
-
 import { forkJoin, Subscription } from 'rxjs';
 
 import * as math from 'mathjs';
@@ -151,7 +150,6 @@ export class AnalyticsComponent implements OnInit, AfterViewInit, OnDestroy {
               .keys(this.pyAnalytics2Data.join_for_pred_unique_cols)
               .filter(k => k !== 'behaviour_change')
               .forEach(k => {
-                console.info(`lowerCamel2under(${k}):`, lowerCamel2under(k), ';');
                 this[lowerCamel2under(k)] = new MatTableDataSource<IMag>([
                   this.pyAnalytics2Data.join_for_pred_unique_cols[k]
                 ]);

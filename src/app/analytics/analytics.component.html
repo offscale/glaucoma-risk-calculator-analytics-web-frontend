@@ -1,194 +1,173 @@
 <button routerLink="/" mat-button>⇦ back</button>
 
-<mat-card>
-  <mat-card-content>
-    <app-date-range [startDatetimeInput]="selectedMoments[0].toDate()" [endDatetimeInput]="selectedMoments[1].toDate()">
-    </app-date-range>
-  </mat-card-content>
-</mat-card>
+<div fxLayout="column" fxLayoutGap="20px">
+  <mat-card fxFlex="auto">
+    <mat-card-content>
+      <app-date-range [endDatetimeInput]="selectedMoments[1].toDate()"
+                      [startDatetimeInput]="selectedMoments[0].toDate()">
+      </app-date-range>
+    </mat-card-content>
+  </mat-card>
 
-<div *ngIf="!pyAnalytics2Data">
-  <pre>
-    {{notFoundDateRange ? "Try a different date-range." : "Python API endpoint not working, see console."}}
-  </pre>
-</div>
+  <pre *ngIf="!pyAnalytics2Data" fxFlex="auto">
+  {{notFoundDateRange ? "Try a different date-range." : "Python API endpoint not working, see console."}}
+    </pre>
 
-<div fxLayout="row" style="padding: 30px 0" fxLayoutGap="20px" *ngIf="pyAnalytics2Data">
-  <div fxFlex="100" fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+  <div *ngIf="pyAnalytics2Data" fxFlex="auto" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+    <mat-card fxFlex="33" fxFlex.lt-md="auto">
+      <mat-card-title>Calculations</mat-card-title>
+      <mat-card-content>
+        <div>
+          <h1 ngStyle.lt-md="font-size: xx-large">{{step2.count}}</h1>
+          <h3>From: {{selectedMoments[0].toISOString()}}</h3>
+          <h3>Until: {{selectedMoments[1].toISOString()}}</h3>
+        </div>
 
-  </div>
-</div>
+        <p>
+          <em>On March 11 2019 from 8AM until 3PM was a major public awareness event ran by the charity, alongside
+            an industry partner.</em>
+        </p>
+      </mat-card-content>
+    </mat-card>
 
-<div fxLayout="row" style="padding: 30px 0" fxLayoutGap="20px" *ngIf="pyAnalytics2Data">
-  <div fxFlex class="main-col">
-    <div fxFlex="100" fxLayout="column" fxLayoutGap="20px">
-      <mat-card fxFlex>
-        <mat-card-title>Calculations</mat-card-title>
-        <mat-card-content>
-          <div fxLayout="row">
-            <div fxFlex="60">
-              <h1>{{step2.count}}</h1>
-              <h3>From: {{selectedMoments[0]}}</h3>
-              <h3>Until: {{selectedMoments[1]}}</h3>
-            </div>
+    <mat-card fxFlex="33" fxFlex.lt-md="auto">
+      <mat-card-content>
+        <p>Of the {{pyAnalytics2Data.survey_count}} entries:</p>
+        <dl>
+          <dt>step 1 only</dt>
+          <dd>{{pyAnalytics2Data.step1_count}}</dd>
 
-            <div fxFlex>
-              <p>
-                <em>On March 11 2019 from 8AM until 3PM was a major public awareness event ran by the charity, alongside
-                  an industry partner.</em>
-              </p>
-            </div>
-          </div>
-        </mat-card-content>
-      </mat-card>
+          <dt>step 2 only</dt>
+          <dd>{{pyAnalytics2Data.step2_count}}</dd>
 
-      <div fxFlex fxLayout="row" fxLayoutGap="20px">
-        <mat-card fxFlex="35">
-          <mat-card-content>
-            <p>Of the {{pyAnalytics2Data.survey_count}} entries:</p>
-            <dl>
-              <dt>step 1 only</dt>
-              <dd>{{pyAnalytics2Data.step1_count}}</dd>
+          <dt>step 3 only</dt>
+          <dd>{{pyAnalytics2Data.step3_count}}</dd>
 
-              <dt>step 2 only</dt>
-              <dd>{{pyAnalytics2Data.step2_count}}</dd>
+          <dt>some_combination</dt>
+          <dd>{{pyAnalytics2Data.some_combination}}</dd>
 
-              <dt>step 3 only</dt>
-              <dd>{{pyAnalytics2Data.step3_count}}</dd>
+          <dt>finished all 3</dt>
+          <dd>{{pyAnalytics2Data.all_steps}}</dd>
+        </dl>
 
-              <dt>some_combination</dt>
-              <dd>{{pyAnalytics2Data.some_combination}}</dd>
+        <p>Some notable statistics:</p>
+        <dl>
+          <dt>completed the final step</dt>
+          <dd>{{pyAnalytics2Data.all_steps}}</dd>
 
-              <dt>finished all 3</dt>
-              <dd>{{pyAnalytics2Data.all_steps}}</dd>
-            </dl>
+          <dt>converted (provided their emails)</dt>
+          <dd *ngIf="pyAnalytics2Data.email_conversion">
+            {{pyAnalytics2Data.emails}}
+          </dd>
+          <dd *ngIf="!pyAnalytics2Data.email_conversion">234.000 &dagger;
+            <p>&dagger;in OPSM event (Monday 11/03/2019 from 8:30AM to 3:30PM AEST)</p>
+          </dd>
+        </dl>
+      </mat-card-content>
+    </mat-card>
 
-            <p>Some notable statistics:</p>
-            <dl>
-              <dt>completed the final step</dt>
-              <dd>{{pyAnalytics2Data.all_steps}}</dd>
+    <mat-card fxFlex="33" fxFlex.lt-md="auto">
+      <mat-card-content>
+        <dt>client_risk magnitude</dt>
+        <dd>
+          <app-mag-table [dataSource]="clientRiskMagTable"></app-mag-table>
+        </dd>
 
-              <dt>converted (provided their emails)</dt>
-              <dd *ngIf="pyAnalytics2Data.email_conversion">
-                {{pyAnalytics2Data.emails}}
-              </dd>
-              <dd *ngIf="!pyAnalytics2Data.email_conversion">234.000 &dagger;
-                <p>&dagger;in OPSM event (Monday 11/03/2019 from 8:30AM to 3:30PM AEST)</p>
-              </dd>
-            </dl>
-          </mat-card-content>
-        </mat-card>
+        <dt>perceived_risk magnitude</dt>
+        <dd>
+          <app-mag-table [dataSource]="perceivedRiskMagTable"></app-mag-table>
+        </dd>
 
-        <mat-card fxFlex>
-          <mat-card-content>
-            <dt>client_risk magnitude</dt>
-            <dd>
-              <app-mag-table [dataSource]="clientRiskMagTable"></app-mag-table>
-            </dd>
+        <dt>behaviour_change</dt>
+        <dd>
+          <table [dataSource]="behaviourChangeTable" mat-table style="width: 100%">
+            <!-- as_recommended Column -->
+            <ng-container matColumnDef="as_recommended">
+              <th *matHeaderCellDef mat-header-cell> as_recommended</th>
+              <td *matCellDef="let element" mat-cell> {{element.as_recommended}} </td>
+            </ng-container>
 
-            <dt>perceived_risk magnitude</dt>
-            <dd>
-              <app-mag-table [dataSource]="perceivedRiskMagTable"></app-mag-table>
-            </dd>
+            <!-- less_likely Column -->
+            <ng-container matColumnDef="less_likely">
+              <th *matHeaderCellDef mat-header-cell> less_likely</th>
+              <td *matCellDef="let element" mat-cell> {{element.less_likely}} </td>
+            </ng-container>
 
-            <dt>behaviour_change</dt>
-            <dd>
-              <table mat-table [dataSource]="behaviourChangeTable" style="width: 100%">
-                <!-- as_recommended Column -->
-                <ng-container matColumnDef="as_recommended">
-                  <th mat-header-cell *matHeaderCellDef> as_recommended</th>
-                  <td mat-cell *matCellDef="let element"> {{element.as_recommended}} </td>
-                </ng-container>
+            <!-- no_change Column -->
+            <ng-container matColumnDef="no_change">
+              <th *matHeaderCellDef mat-header-cell> no_change</th>
+              <td *matCellDef="let element" mat-cell> {{element.no_change}} </td>
+            </ng-container>
 
-                <!-- less_likely Column -->
-                <ng-container matColumnDef="less_likely">
-                  <th mat-header-cell *matHeaderCellDef> less_likely</th>
-                  <td mat-cell *matCellDef="let element"> {{element.less_likely}} </td>
-                </ng-container>
-
-                <!-- no_change Column -->
-                <ng-container matColumnDef="no_change">
-                  <th mat-header-cell *matHeaderCellDef> no_change</th>
-                  <td mat-cell *matCellDef="let element"> {{element.no_change}} </td>
-                </ng-container>
-
-                <tr mat-header-row *matHeaderRowDef="behaviourChangeColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: behaviourChangeColumns;">{{row}}</tr>
-              </table>
-            </dd>
-          </mat-card-content>
-        </mat-card>
-      </div>
-    </div>
+            <tr *matHeaderRowDef="behaviourChangeColumns" mat-header-row></tr>
+            <tr *matRowDef="let row; columns: behaviourChangeColumns;" mat-row>{{row}}</tr>
+          </table>
+        </dd>
+      </mat-card-content>
+    </mat-card>
   </div>
 
-  <div class="main-col" fxFlex fxLayout="column">
-    <div fxFlex id="feature_importance_gv" #feature_importance_gv
-         [innerHTML]="pyAnalytics3Data.feature_importance_gv"></div>
-    <button (click)="populate()" id="populate_button">populate</button>
+  <div fxFlex="auto" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+    <ng-container fxFlex="33" fxFlex.lt-md="auto">
+      <div #feature_importance_gv [innerHTML]="pyAnalytics3Data.feature_importance_gv"
+           id="feature_importance_gv"></div>
+      <button (click)="populate()" id="populate_button">populate</button>
 
-    <app-graphviz fxFlex [graph]="pyAnalytics3Data.big_xgb_gv" [callback]="populate.bind(this)">
-    </app-graphviz>
+      <app-graphviz [callback]="populate.bind(this)" [graph]="pyAnalytics3Data.big_xgb_gv">
+      </app-graphviz>
+    </ng-container>
+
+    <mat-card *ngIf="riskResTable != null" fxFlex="auto" fxFlex.lt-md="auto">
+      <mat-card-title>Ethnic distribution</mat-card-title>
+      <mat-card-content class="hw-100">
+        <ngx-charts-pie-chart [labels]="true" [results]="ethnicityAgg" fxFlex
+                              style="text-align: left">
+        </ngx-charts-pie-chart>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card *ngIf="ageDistribution != null" fxFlex="auto" fxFlex.lt-md="auto">
+      <mat-card-title>Age distribution</mat-card-title>
+      <mat-card-content class="hw-100">
+        <ngx-charts-line-chart [results]="ageDistribution" [yAxis]="true"
+                               fxFlex></ngx-charts-line-chart>
+      </mat-card-content>
+    </mat-card>
   </div>
 
-  <div class="main-col" fxLayout="column" fxLayoutGap="20px"
-       *ngIf="riskResTable != null && riskResTable.data.length" fxFlex>
-    <div fxLayout="row" fxLayoutGap="20px">
-      <mat-card fxFlex>
-        <mat-card-title>Ethnic distribution</mat-card-title>
-        <mat-card-content class="hw-100">
-          <ngx-charts-pie-chart fxFlex [labels]="true" [results]="ethnicityAgg"
-                                style="text-align: left">
-          </ngx-charts-pie-chart>
-        </mat-card-content>
-      </mat-card>
+  <div fxFlex="auto" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+    <mat-card *ngIf="step2multiSeries != null" fxFlex="auto" fxFlex.lt-md="auto">
+      <mat-card-title>Stratified risk (area chart)</mat-card-title>
+      <mat-card-content class="hw-100">
+        <ngx-charts-area-chart-normalized
+          [legend]="true"
+          [results]="step2multiSeries"
+          [tooltipDisabled]="true">
+        </ngx-charts-area-chart-normalized>
+      </mat-card-content>
+    </mat-card>
 
-      <mat-card fxFlex>
-        <mat-card-title>Age distribution</mat-card-title>
-        <mat-card-content class="hw-100">
-          <ngx-charts-line-chart fxFlex [results]="ageDistribution"
-                                 [yAxis]="true"></ngx-charts-line-chart>
-        </mat-card-content>
-      </mat-card>
-    </div>
-
-    <div fxLayout="row" fxLayoutGap="20px">
-      <mat-card fxFlex="70">
-        <mat-card-title>Stratified risk (area chart)</mat-card-title>
-        <mat-card-content class="hw-100">
-          <ngx-charts-area-chart-normalized
-            [results]="step2multiSeries"
-            [legend]="true"
-            [tooltipDisabled]="true">
-          </ngx-charts-area-chart-normalized>
-        </mat-card-content>
-      </mat-card>
-
-      <mat-card fxFlex>
-        <mat-card-title>Stratified risk (numbers)</mat-card-title>
-        <mat-card-content fxLayout="row" fxLayout.lt-md="column">
-          <div fxFlex style="background: #AF667D; text-align: center;">
-            <h2 style="color: whitesmoke">{{step2.least}}</h2>
-          </div>
-          <div fxFlex style="background: #9BB5E6;text-align: center;">
-            <h2>{{step2.average}}</h2>
-          </div>
-          <div fxFlex style="background: #B099B7;text-align: center;">
-            <h2 style="color: whitesmoke">{{step2.high}}</h2>
-          </div>
-          <div fxFlex style="background: #C4E7F5;text-align: center;">
-            <h2>{{step2.greatest}}</h2>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
+    <mat-card *ngIf="step2 != null" fxFlex="auto">
+      <mat-card-title>Stratified risk (numbers)</mat-card-title>
+      <mat-card-content fxLayout="row" fxLayout.lt-md="column">
+        <div fxFlex style="background: #AF667D; text-align: center;">
+          <h2 style="color: whitesmoke">{{step2.least}}</h2>
+        </div>
+        <div fxFlex style="background: #9BB5E6;text-align: center;">
+          <h2>{{step2.average}}</h2>
+        </div>
+        <div fxFlex style="background: #B099B7;text-align: center;">
+          <h2 style="color: whitesmoke">{{step2.high}}</h2>
+        </div>
+        <div fxFlex style="background: #C4E7F5;text-align: center;">
+          <h2>{{step2.greatest}}</h2>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </div>
-</div>
 
-<div>
-  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px"
-       *ngIf="step2 != null" fxFlex>
-    <mat-expansion-panel fxFlex *ngFor="let row_wise of rowWiseStats.column | keyvalue">
+  <div fxFlex="auto" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+    <mat-expansion-panel *ngFor="let row_wise of rowWiseStats.column | keyvalue" fxFlex="auto">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Stats for {{row_wise.key}}
@@ -213,7 +192,21 @@
       </dl>
     </mat-expansion-panel>
   </div>
+
+  <div *ngIf="riskResTable != null" class="mat-elevation-z8 hw-100" fxFlex="auto" fxLayout="row"
+       style="margin-top: 30px">
+    <mat-tab-group class="hw-100" selectedIndex="1">
+      <mat-tab label="Step 1 & [maybe] step 3">
+        <app-survey-data [dataSource]="surveyTable"></app-survey-data>
+      </mat-tab>
+      <mat-tab label="Step 2">
+        <app-risk-res-data [dataSource]="riskResTable"></app-risk-res-data>
+      </mat-tab>
+      <mat-tab label="Joint steps 1&ndash;3"> TODO: show this</mat-tab>
+    </mat-tab-group>
+  </div>
 </div>
+
 
 <!--
 <div fxFlex="100" fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
@@ -225,14 +218,3 @@
 </div>
 -->
 
-<div fxLayout="row" class="mat-elevation-z8 hw-100" style="margin-top: 30px" *ngIf="riskResTable != null">
-  <mat-tab-group selectedIndex="1" class="hw-100">
-    <mat-tab label="Step 1 & [maybe] step 3">
-      <app-survey-data [dataSource]="surveyTable"></app-survey-data>
-    </mat-tab>
-    <mat-tab label="Step 2">
-      <app-risk-res-data [dataSource]="riskResTable"></app-risk-res-data>
-    </mat-tab>
-    <mat-tab label="Joint steps 1&ndash;3"> TODO: show this</mat-tab>
-  </mat-tab-group>
-</div>

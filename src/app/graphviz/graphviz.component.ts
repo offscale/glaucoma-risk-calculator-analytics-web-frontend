@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, Input, OnInit } from '@angular/core';
 
 import { graphviz, GraphvizOptions } from 'd3-graphviz';
 
@@ -12,7 +12,7 @@ export class GraphvizComponent implements OnInit, AfterViewInit, AfterContentIni
   private static defaultOptions: GraphvizOptions = {
     fit: true,
     height: '100%',
-    width: '100%',
+    width: '500%',
     zoom: false,
   };
 
