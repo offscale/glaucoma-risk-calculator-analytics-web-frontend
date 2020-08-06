@@ -66,7 +66,7 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card fxFlex="33" fxFlex.lt-md="auto">
+    <mat-card *ngIf="clientRiskMagTable != null && perceivedRiskMagTable != null" fxFlex="33" fxFlex.lt-md="auto">
       <mat-card-content>
         <dt>client_risk magnitude</dt>
         <dd>
@@ -108,16 +108,19 @@
   </div>
 
   <div fxFlex="auto" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
-    <ng-container fxFlex="33" fxFlex.lt-md="auto">
-      <div #feature_importance_gv [innerHTML]="pyAnalytics3Data.feature_importance_gv"
-           id="feature_importance_gv"></div>
-      <button (click)="populate()" id="populate_button">populate</button>
+    <app-graphviz *ngIf="pyAnalytics3Data != null && pyAnalytics3Data.big_xgb_gv != null" [graph]="pyAnalytics3Data.big_xgb_gv" fxFlex="50"
+                  fxFlex.lt-md="100"
+                  id="graphviz">
+    </app-graphviz>
+    <button (click)="populate()" color="primary" mat-button>populate</button>
+    <app-svg-viewer #featureImportanceGvSvg
+                    *ngIf="pyAnalytics3Data != null && pyAnalytics3Data.feature_importance_gv != null" [remote]="false" [src]="pyAnalytics3Data.feature_importance_gv"
+                    fxFlex="50" fxFlex.lt-md="100"
+                    id="feature_importance_gv"></app-svg-viewer>
+  </div>
 
-      <app-graphviz [callback]="populate.bind(this)" [graph]="pyAnalytics3Data.big_xgb_gv">
-      </app-graphviz>
-    </ng-container>
-
-    <mat-card *ngIf="riskResTable != null" fxFlex="auto" fxFlex.lt-md="auto">
+  <div fxFlex="auto" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+    <mat-card *ngIf="ethnicityAgg != null" fxFlex="auto" fxFlex.lt-md="auto">
       <mat-card-title>Ethnic distribution</mat-card-title>
       <mat-card-content class="hw-100">
         <ngx-charts-pie-chart [labels]="true" [results]="ethnicityAgg" fxFlex
@@ -166,7 +169,7 @@
     </mat-card>
   </div>
 
-  <div fxFlex="auto" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+  <div *ngIf="rowWiseStats != null" fxFlex="auto" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
     <mat-expansion-panel *ngFor="let row_wise of rowWiseStats.column | keyvalue" fxFlex="auto">
       <mat-expansion-panel-header>
         <mat-panel-title>
@@ -193,7 +196,7 @@
     </mat-expansion-panel>
   </div>
 
-  <div *ngIf="riskResTable != null" class="mat-elevation-z8 hw-100" fxFlex="auto" fxLayout="row"
+  <div *ngIf="surveyTable != null && riskResTable != null" class="mat-elevation-z8 hw-100" fxFlex="auto" fxLayout="row"
        style="margin-top: 30px">
     <mat-tab-group class="hw-100" selectedIndex="1">
       <mat-tab label="Step 1 & [maybe] step 3">

@@ -8,6 +8,16 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { CdkTableModule } from '@angular/cdk/table';
 
+import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
@@ -20,23 +30,12 @@ import { SurveyDataComponent } from '../survey-data/survey-data.component';
 import { DateRangeModule } from '../date-range/date-range.module';
 import { MagTableComponent } from '../mag-table/mag-table.component';
 import { CiTableComponent } from '../ci-table/ci-table.component';
-import { NoTotalPipe } from '../no-total.pipe';
 import { GraphvizModule } from '../graphviz/graphviz.module';
 import { SvgViewerModule } from '../svg-viewer/svg-viewer.module';
+import { AuthInterceptor } from '../auth/auth.interceptors';
+import { NoTotalPipe } from '../no-total.pipe';
 import { AnalyticsComponent } from './analytics.component';
 import { analyticsRoutes } from './analytics.routes';
-
-import { AuthInterceptor } from '../auth/auth.interceptors';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatInputModule } from '@angular/material/input';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @NgModule({

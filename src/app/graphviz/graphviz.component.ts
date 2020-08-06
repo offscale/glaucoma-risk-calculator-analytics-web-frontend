@@ -1,6 +1,8 @@
 import { AfterContentInit, AfterViewInit, Component, Input, OnInit } from '@angular/core';
 
-import { graphviz, GraphvizOptions } from 'd3-graphviz';
+import * as d3 from 'd3-selection';
+import * as dagreD3 from 'dagre-d3';
+import * as graphlibDot from 'graphlib-dot';
 
 @Component({
   selector: 'app-graphviz',
@@ -9,18 +11,12 @@ import { graphviz, GraphvizOptions } from 'd3-graphviz';
 })
 export class GraphvizComponent implements OnInit, AfterViewInit, AfterContentInit {
   private static count = 0;
-  private static defaultOptions: GraphvizOptions = {
-    fit: true,
-    height: '100%',
-    width: '500%',
-    zoom: false,
-  };
 
   public id: string;
   // private count: number = 0;
 
-  @Input('graph') graph: string;
-  @Input('callback') cb: () => void;
+  @Input() graph: string;
+  @Input() cb: () => void;
 
   // @Output() change: EventEmitter<number> = new EventEmitter<number>();
 
@@ -28,17 +24,17 @@ export class GraphvizComponent implements OnInit, AfterViewInit, AfterContentIni
 
   constructor() {
     this.id = `graphviz${GraphvizComponent.count}`;
-    this.renderGraph();
+    // this.renderGraph();
     GraphvizComponent.count++;
   }
 
   ngOnInit(): void {
     this.props = { dot: this.graph };
-    this.renderGraph();
+    // this.renderGraph();
   }
 
   ngAfterViewInit(): void {
-    this.renderGraph();
+    // this.renderGraph();
   }
 
   ngAfterContentInit(): void {
@@ -46,37 +42,48 @@ export class GraphvizComponent implements OnInit, AfterViewInit, AfterContentIni
   }
 
   private renderGraph(): void {
-    if (!this.props || !this.props.dot) {
-      this.props = {
-        dot: this.graph
-      };
-    }
-    if (document.getElementById(this.id)) {
-      graphviz(`#${this.id}`)
-        .options(this.options())
-        .renderDot(this.props.dot);
-      // this.change.emit(++this.count);
-      setTimeout(this.cb, 100);
-    }
-  }
+    // const graphLink = d3.select('#graphLink');
+    const render = new dagreD3.render();
+    const g = graphlibDot.read(this.graph);
+    // console.info('graph:', this.graph, ';');
+    // Set margins, if not present
+    /*if (!g.graph().hasOwnProperty('marginx') &&
+      !g.graph().hasOwnProperty('marginy')) {
+      g.graph().marginx = 20;
+      g.graph().marginy = 20;
+    }*/
 
-  countChange(event): void {
-    console.info('countChange::event', event, ';');
-  }
+    // g.graph().transition = selection => selection.transition().duration(500);
 
-  private options(): GraphvizOptions {
-    if (!this.props.options)
-      return GraphvizComponent.defaultOptions;
+    // Render the graph into svg g
+    /*d3
+      .select(`#${this.id}`
+      .call(render as any, g);*/
+    console.info('d3.selectAll("g"):', d3.selectAll('g'),
+      `;\nd3.select(#${this.id} g):`, d3.select(`#${this.id} g`),
+      ';\nd3.select(`svg g`):', d3.select(`svg g`), ';');
+    const q = d3.select(`svg g`);
+    /*
+    const q = d3.select(`#${this.id} g`);
+    */
+    /*
+    const q = d3.select(`#${this.id} g`);
+    */
+    /*q.call(render as any, g);*/
+    // q.call(render as any, g);
 
-    const options: GraphvizOptions = GraphvizComponent.defaultOptions;
-    for (const option of Object.keys(this.props.options))
-      options[option] = this.props.options[option];
+    const renderer = new dagreD3.render();
+    renderer(d3.select('svg g') as any, g as any);
 
-    return options;
+    /*setTimeout(() => {
+      const svg: SVGGraphicsElement = document.getElementById(this.id) as unknown as SVGGraphicsElement;
+      const bbox = svg.getBBox();
+      svg.style.width = `${bbox.width + 40.0}px`;
+      svg.style.height = `${bbox.height + 40.0}px`;
+    }, 1000);*/
   }
 }
 
 export interface IGraphvizProps {
   dot: string;
-  options?: GraphvizOptions;
 }

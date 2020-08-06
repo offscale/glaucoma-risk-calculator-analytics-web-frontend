@@ -10,6 +10,7 @@ const getAbsolutePathFromSrc = (src: string) => src.slice(src.indexOf('assets/')
 export class SvgViewerComponent implements OnInit {
   @Input() src: string;
   @Input() scaleToContainer: boolean;
+  @Input() remote = true;
 
   constructor(private elementRef: ElementRef, private http: HttpClient) { }
 
@@ -30,8 +31,11 @@ export class SvgViewerComponent implements OnInit {
 
   private fetchAndInlineSvgContent(path: string): void {
     const svgAbsPath = getAbsolutePathFromSrc(path);
-    this.http.get(svgAbsPath, {responseType: 'text'}).subscribe(svgResponse => {
-      this.inlineSvgContent(svgResponse);
-    });
+    if (this.remote)
+      this.http.get(svgAbsPath, {responseType: 'text'}).subscribe(svgResponse => {
+        this.inlineSvgContent(svgResponse);
+      });
+    else
+      this.inlineSvgContent(path);
   }
 }

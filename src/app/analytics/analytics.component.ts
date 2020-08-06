@@ -45,6 +45,9 @@ export class AnalyticsComponent implements OnInit, AfterViewInit, OnDestroy {
   rowWiseColumns: string[];
   step2multiSeries: IMultiSeries;
 
+  @ViewChild('featureImportanceGvSvg', { static: false })
+  featureImportanceGvSvg: ElementRef;
+
   notFoundDateRange = false;
 
   public selectedMoments: Moment[] = [
@@ -191,8 +194,9 @@ export class AnalyticsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   populate(): void {
-    this.featureImportanceElement.nativeElement.innerHTML = this.pyAnalytics3Data.feature_importance_gv;
-    document.getElementById('populate_button').remove();
+    console.info('dim:', this.featureImportanceGvSvg.nativeElement.getWidth());
+    /*this.featureImportanceElement.nativeElement.innerHTML = this.pyAnalytics3Data.feature_importance_gv;
+    document.getElementById('populate_button').remove();*/
   }
 
   ngAfterViewInit(): void {
