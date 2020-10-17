@@ -3,3 +3,20 @@
 <div (click)="dismissSidebar()" style="padding: 0 20px">
   <router-outlet></router-outlet>
 </div>
+
+<footer [ngStyle.gt-sm]="{'padding': '20px 0 20px 20px'}" [ngStyle.lt-md]="{'padding': '0 20px'}"
+        class="text-center"
+        fxLayout="row"
+        fxLayout.lt-md="column"
+        fxLayoutAlign="center center">
+  <div fxFlex fxLayout="column">
+    <div fxFlex>Development sponsored by</div>
+    <a fxFlex href="https://sydneyscientific.org">
+      <h1>Sydney Scientific Foundation</h1>
+      <h3>The scalable medical diagnosis charity</h3>
+    </a>
+  </div>
+  <div fxLayoutAlign="end" style="padding-right: 20px">
+    &copy; 2018&ndash;2020
+  </div>
+</footer>

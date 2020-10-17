@@ -4,6 +4,8 @@ import { RouterModule } from '@angular/router';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,26 +28,27 @@ import { appRoutes } from './app.routes';
   declarations: [
     AppComponent
   ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    LayoutModule,
-    BrowserAnimationsModule,
-    RouterModule,
-    RouterModule.forRoot(appRoutes),
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        LayoutModule,
+        BrowserAnimationsModule,
+        RouterModule,
+        RouterModule.forRoot(appRoutes),
 
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
-    MatGridListModule,
-    MatCardModule,
-    MatMenuModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatSidenavModule,
+        MatIconModule,
+        MatListModule,
+        MatGridListModule,
+        MatCardModule,
+        MatMenuModule,
 
-    AlertsModule.forRoot(),
-    SidenavModule
-  ],
+        AlertsModule.forRoot(),
+        SidenavModule,
+        FlexLayoutModule
+    ],
   providers: [
     AuthGuard, {
       provide: HTTP_INTERCEPTORS,

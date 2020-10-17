@@ -1,0 +1,30 @@
+
+footer {
+  background: #ff5722;
+  h1, h3, a {
+    font-family: 'Nunito Sans', Arial, serif;
+    line-height: 1;
+    margin: 0;
+  }
+
+  a:visited, div {
+    color: white;
+  }
+
+  a:link {
+    color: white;
+    text-decoration: none;
+    font-weight: normal;
+    line-height: 80px;
+    font-size: 20px;
+  }
+
+  h1 {
+    font-size: xx-large;
+    font-weight: bolder;
+  }
+
+  h3 {
+    font-weight: normal;
+  }
+}
