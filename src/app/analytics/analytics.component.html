@@ -107,14 +107,17 @@
     </mat-card>
   </div>
 
-  <div fxFlex="auto" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
-    <app-graphviz *ngIf="pyAnalytics3Data != null && pyAnalytics3Data.big_xgb_gv != null" [graph]="pyAnalytics3Data.big_xgb_gv" fxFlex="50"
-                  fxFlex.lt-md="100"
-                  id="graphviz">
-    </app-graphviz>
-    <button (click)="populate()" color="primary" mat-button>populate</button>
-    <app-svg-viewer #featureImportanceGvSvg
-                    *ngIf="pyAnalytics3Data != null && pyAnalytics3Data.feature_importance_gv != null" [remote]="false" [src]="pyAnalytics3Data.feature_importance_gv"
+  <div *ngIf="pyAnalytics3Data != null" fxFlex="auto" fxLayout="row" fxLayout.lt-md="column"
+       fxLayoutGap="20px">
+    <app-svg-viewer *ngIf="pyAnalytics3Data.big_xgb_gv != null"
+                    [remote]="false"
+                    [src]="pyAnalytics3Data.big_xgb_gv"
+                    fxFlex="50" fxFlex.lt-md="100"
+                    id="big_xgb_gv"></app-svg-viewer>
+
+    <app-svg-viewer *ngIf="pyAnalytics3Data.feature_importance_gv != null"
+                    [remote]="false"
+                    [src]="pyAnalytics3Data.feature_importance_gv"
                     fxFlex="50" fxFlex.lt-md="100"
                     id="feature_importance_gv"></app-svg-viewer>
   </div>

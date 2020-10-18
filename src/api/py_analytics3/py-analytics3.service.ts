@@ -18,9 +18,8 @@ export class PyAnalytics3Service {
   read(params: HttpParams): Observable<IPyAnalytics3Response> {
     return this.http.get<IPyAnalytics3Response>('/api/py/analytics3', { params })
       .pipe(map(res => {
-        res.feature_importance_gv = atob(res.feature_importance_gv)
-          .replace('height="345.6pt"', 'height="100%"')
-          .replace('width="460.8pt"', 'width="100%"');
+        res.big_xgb_gv = atob(res.big_xgb_gv);
+        res.feature_importance_gv = atob(res.feature_importance_gv);
         return res;
       }));
   }

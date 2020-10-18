@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 
@@ -30,7 +30,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './analytics.component.html',
   styleUrls: ['./analytics.component.css'],
 })
-export class AnalyticsComponent implements OnInit, AfterViewInit, OnDestroy {
+export class AnalyticsComponent implements OnInit, OnDestroy {
   riskResTable: MatTableDataSource<TRiskResRow> = null;
   surveyTable: MatTableDataSource<ISurvey> = null;
   clientRiskMagTable: MatTableDataSource<IMag> = null;
@@ -191,21 +191,6 @@ export class AnalyticsComponent implements OnInit, AfterViewInit, OnDestroy {
             } else console.error('AnalyticsComponent::ngOnInit::forkJoin::err', err, ';');
           });
       });
-  }
-
-  populate(): void {
-    console.info('dim:', this.featureImportanceGvSvg.nativeElement.getWidth());
-    /*this.featureImportanceElement.nativeElement.innerHTML = this.pyAnalytics3Data.feature_importance_gv;
-    document.getElementById('populate_button').remove();*/
-  }
-
-  ngAfterViewInit(): void {
-    /*if (document.getElementById('feature_importance_gv') &&
-      document.getElementById('populate_button'))
-      this.populate();*/
-    // document.getElementById('featureImportanceElement').appendChild(this.doc);
-    // this.doc;
-    // this.date_range_component.open();
   }
 
   private graphInit(): void {
