@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { SecretDashboardComponent } from './secret-dashboard.component';
 
@@ -6,7 +6,7 @@ describe('SecretDashboardComponent', () => {
   let component: SecretDashboardComponent;
   let fixture: ComponentFixture<SecretDashboardComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [SecretDashboardComponent]
     })

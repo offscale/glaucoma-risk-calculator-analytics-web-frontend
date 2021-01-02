@@ -34,7 +34,7 @@ import { appRoutes } from './app.routes';
         LayoutModule,
         BrowserAnimationsModule,
         RouterModule,
-        RouterModule.forRoot(appRoutes),
+        RouterModule.forRoot(appRoutes, { relativeLinkResolution: 'legacy' }),
 
         MatToolbarModule,
         MatButtonModule,

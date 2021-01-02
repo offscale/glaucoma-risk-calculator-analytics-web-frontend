@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { GraphvizComponent } from './graphviz.component';
 
@@ -6,7 +6,7 @@ describe('GraphvizComponent', () => {
   let component: GraphvizComponent;
   let fixture: ComponentFixture<GraphvizComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ GraphvizComponent ]
     })
