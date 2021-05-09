@@ -1,6 +1,6 @@
 {
   "name": "glaucoma-risk-calculator-analytics-web-frontend",
-  "version": "0.0.28",
+  "version": "0.0.29",
   "description": "Analytics and administrator interface for the glaucoma-risk-calculator",
   "repository": {
     "url": "https://github.com/SamuelMarks/glaucoma-risk-calculator-analytics-web-frontend"
@@ -17,17 +17,17 @@
     "test": "ng test"
   },
   "dependencies": {
-    "@angular/animations": "~11.0.5",
-    "@angular/cdk": "^11.0.3",
-    "@angular/common": "~11.0.5",
-    "@angular/compiler": "~11.0.5",
-    "@angular/core": "~11.0.5",
+    "@angular/animations": "~11.2.13",
+    "@angular/cdk": "^11.2.12",
+    "@angular/common": "~11.2.13",
+    "@angular/compiler": "~11.2.13",
+    "@angular/core": "~11.2.13",
     "@angular/flex-layout": "^11.0.0-beta.33",
-    "@angular/forms": "~11.0.5",
-    "@angular/material": "^11.0.3",
-    "@angular/platform-browser": "~11.0.5",
-    "@angular/platform-browser-dynamic": "~11.0.5",
-    "@angular/router": "~11.0.5",
+    "@angular/forms": "~11.2.13",
+    "@angular/material": "^11.2.12",
+    "@angular/platform-browser": "~11.2.13",
+    "@angular/platform-browser-dynamic": "~11.2.13",
+    "@angular/router": "~11.2.13",
     "@mat-datetimepicker/core": "https://github.com/SamuelMarks/mat-datetimepicker/releases/download/ng10/core-4.1.1.tar.gz",
     "@mat-datetimepicker/moment": "https://github.com/SamuelMarks/mat-datetimepicker/releases/download/ng10/moment-4.1.1.tar.gz",
     "@swimlane/ngx-charts": "https://github.com/SamuelMarks/ngx-charts/releases/download/ng10/ngx-charts-ng10.tar.gz",
@@ -41,9 +41,9 @@
     "zone.js": "~0.11.3"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.1100.5",
-    "@angular/cli": "~11.0.5",
-    "@angular/compiler-cli": "~11.0.5",
+    "@angular-devkit/build-angular": "~0.1102.12",
+    "@angular/cli": "~11.2.12",
+    "@angular/compiler-cli": "~11.2.13",
     "@types/jasmine": "~3.6.2",
     "@types/jasminewd2": "~2.0.8",
     "@types/node": "^14.14.19",
